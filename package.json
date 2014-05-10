@@ -5,7 +5,8 @@
     "express": "^4.1.2",
     "request": "^2.34.0",
     "winston": "^0.7.3",
-    "xml2js": "^0.4.2"
+    "xml2js": "^0.4.2",
+    "influx": "^0.4.0"
   },
   "devDependencies": {
     "grunt": "^0.4.4",

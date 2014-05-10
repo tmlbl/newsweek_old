@@ -1,6 +1,7 @@
 var xml = require("xml2js"),
 		request = require("request"),
-		winston = require("winston");
+		winston = require("winston")
+    db = require("../db/db.js");
 
 /**
  * Gets the weekly forex news information from Forex Factory
@@ -30,7 +31,7 @@ module.exports = function (cb) {
  * of length 1 as values. We'll flatten those to strings,
  * and return an array of event objects.
  * @param {Object} json
- * @returns {Object} clean json
+ * @returns {Array} clean json
  */
 function cleanJSON (json) {
 	if (json && json.weeklyevents) {
@@ -52,3 +53,22 @@ function cleanJSON (json) {
 	return json;
 }
 module.exports.testCleanJSON = cleanJSON;
+
+/**
+ * Saves the news event data to the database
+ */
+function saveEvents (events) {
+  function parseDates (el, index, array) {
+   events[index].time = Date.parse(el.time)
+  }
+  events.forEach(parseDates);
+  db.writePoints("ffnews", events, {}, function (err) {
+    if (err) {
+      winston.error("Error saving events to db", err);
+    } else {
+      winston.info("Saved FXF events to db");
+    }
+  });
+}
+module.exports.saveEvents = saveEvents;
+

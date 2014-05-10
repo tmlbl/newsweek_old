@@ -1,3 +1,6 @@
 {"level":"info","message":"User accessed index.html","timestamp":"2014-05-10T07:55:58.130Z"}
 {"level":"info","message":"User accessed index.html","timestamp":"2014-05-10T08:01:38.850Z"}
 {"level":"info","message":"User accessed index.html","timestamp":"2014-05-10T08:08:03.844Z"}
+{"level":"info","message":"User accessed index.html","timestamp":"2014-05-10T21:01:56.318Z"}
+{"level":"error","message":"Error saving events to db","timestamp":"2014-05-10T21:06:32.693Z"}
+{"level":"error","message":"Error saving events to db","timestamp":"2014-05-10T21:07:12.393Z"}
