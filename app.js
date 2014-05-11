@@ -5,7 +5,7 @@ var express = require("express"),
 
 app.use("/static", express.static(__dirname + "/static"));
 
-winston.add(winston.transports.File, { filename: 'winston.log' });
+winston.add(winston.transports.File, { filename: "winston.log" });
 winston.remove(winston.transports.Console);
 
 app.get("/", function (req, res) {

@@ -19,7 +19,7 @@ module.exports = function (cb) {
 					cb(err, null);
 					winston.error(err);
 				}
-				cb(null, cleanJSON(news));
+				cb(null, formatDates(cleanJSON(news)));
 			});
 		}
 	});
@@ -58,10 +58,6 @@ module.exports.testCleanJSON = cleanJSON;
  * Saves the news event data to the database
  */
 function saveEvents (events) {
-  function parseDates (el, index, array) {
-   events[index].time = Date.parse(el.time)
-  }
-  events.forEach(parseDates);
   db.writePoints("ffnews", events, {}, function (err) {
     if (err) {
       winston.error("Error saving events to db", err);
@@ -71,4 +67,24 @@ function saveEvents (events) {
   });
 }
 module.exports.saveEvents = saveEvents;
+
+/**
+ * Parses the dates in the raw event data into
+ * GMT standardized timestamps for storage
+ */
+function formatDates (events) {
+  var am, pm;
+  events.forEach(function (el, index, array) {
+    am = el.time.indexOf("am");
+    pm = el.time.indexOf("pm");
+    if (am !== -1) {
+      el.time = Number(el.time.slice(0, am)) - 1;
+    } else if (pm !== -1) {
+      el.time = el.time.slice(0, pm);
+      el.time = Number(el.time) + 13;
+    }
+    events.time = el.time;
+  });
+  return events;
+}
 
