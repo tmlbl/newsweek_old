@@ -1,7 +1,15 @@
 var xml = require("xml2js"),
 		request = require("request"),
-		winston = require("winston")
+		winston = require("winston"),
     db = require("../db/db.js");
+
+module.exports = function () {
+	getNews(function (err, news) {
+		news = cleanJSON(news);
+		news = formatDates(news);
+		db.save("ffnews", news);
+	});
+};
 
 /**
  * Gets the weekly forex news information from Forex Factory
@@ -9,7 +17,7 @@ var xml = require("xml2js"),
  * @param {Function} cb (err, news)
  * @returns {Object} news -- json of week's news
  */
-module.exports = function (cb) {
+function getNews (cb) {
 	var url = "http://www.forexfactory.com/ffcal_week_this.xml";
 	request.get(url, function (err, res, body) {
 		if (err) cb(err, null);
@@ -19,11 +27,12 @@ module.exports = function (cb) {
 					cb(err, null);
 					winston.error(err);
 				}
-				cb(null, formatDates(cleanJSON(news)));
+				cb(null, news);
 			});
 		}
 	});
-};
+}
+module.exports.getNews = getNews;
 
 /**
  * The data is arbitrarily nested.
@@ -31,7 +40,7 @@ module.exports = function (cb) {
  * of length 1 as values. We'll flatten those to strings,
  * and return an array of event objects.
  * @param {Object} json
- * @returns {Array} clean json
+ * @returns {Object} clean json
  */
 function cleanJSON (json) {
 	if (json && json.weeklyevents) {
@@ -52,39 +61,42 @@ function cleanJSON (json) {
 	}
 	return json;
 }
-module.exports.testCleanJSON = cleanJSON;
+module.exports.cleanJSON = cleanJSON;
 
 /**
- * Saves the news event data to the database
- */
-function saveEvents (events) {
-  db.writePoints("ffnews", events, {}, function (err) {
-    if (err) {
-      winston.error("Error saving events to db", err);
-    } else {
-      winston.info("Saved FXF events to db");
-    }
-  });
-}
-module.exports.saveEvents = saveEvents;
-
-/**
- * Parses the dates in the raw event data into
- * GMT standardized timestamps for storage
+ * Parses the date and time attributes of the news
+ * event into a unix timestamp for storage
+ * @param {Array} events
+ * @returns {Array} events
  */
 function formatDates (events) {
-  var am, pm;
-  events.forEach(function (el, index, array) {
-    am = el.time.indexOf("am");
-    pm = el.time.indexOf("pm");
+  var am, pm, time;
+  events.forEach(function (el) {
+		if (el.date) {
+			var d = el.date.split("-");
+			d = [ d[2], d[0], d[1] ];
+			el.date = d.join("-");
+		}
+		el.date += "T";
+		if (el.time) {
+			if (el.time.length < 7) {
+				time = "0" + el.time;
+				el.time = time;
+			}
+			am = el.time.indexOf("am");
+			pm = el.time.indexOf("pm");
+		}
     if (am !== -1) {
-      el.time = Number(el.time.slice(0, am)) - 1;
+      el.time = el.time.slice(0, am);
     } else if (pm !== -1) {
-      el.time = el.time.slice(0, pm);
-      el.time = Number(el.time) + 13;
+      time = el.time.slice(0, pm);
+			time = time.split(":");
+			time[0] = parseInt(time[0]) + 12;
+			el.time = time.join(":");
     }
-    events.time = el.time;
+		time = Date.parse(el.date + el.time);
+    el.time = time;
   });
   return events;
 }
-
+module.exports.formatDates = formatDates;
