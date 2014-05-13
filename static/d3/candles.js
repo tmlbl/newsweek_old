@@ -9,12 +9,15 @@ chart.maxTime = 0;
 chart.minTime = 0;
 _.each(sampleCandles, function (datum, index) {
 	var t = sampleCandles[index].time = Date.parse(datum.time);
+	chart.minTime = 80000000000000;
 	if (t > chart.maxTime) {
 		chart.maxTime = t;
 	} else if (t < chart.minTime) {
 		chart.minTime = t;
 	}
 });
+console.log(chart.maxTime);
+console.log(chart.minTime);
 
 chart.selectAll("rect")
 	.data(sampleCandles)

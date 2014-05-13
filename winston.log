@@ -4,3 +4,4 @@
 {"level":"info","message":"User accessed index.html","timestamp":"2014-05-10T21:01:56.318Z"}
 {"level":"error","message":"Error saving events to db","timestamp":"2014-05-10T21:06:32.693Z"}
 {"level":"error","message":"Error saving events to db","timestamp":"2014-05-10T21:07:12.393Z"}
+{"level":"info","message":"User accessed index.html","timestamp":"2014-05-11T01:53:52.346Z"}
