@@ -46,7 +46,7 @@ function cleanJSON (json) {
 	if (json && json.weeklyevents) {
 		json = json.weeklyevents.event;
 	} else {
-		winston.error("Received malformed JSON");
+		return false;
 	}
 	for (var i in json) {
 		if (json.hasOwnProperty(i)) {
@@ -100,3 +100,4 @@ function formatDates (events) {
   return events;
 }
 module.exports.formatDates = formatDates;
+

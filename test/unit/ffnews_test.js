@@ -52,8 +52,8 @@ describe("formatDates function", function () {
 	it("should parse date info to timestamp", function () {
 		var data = [
 			{
-				"date":"05-12-2014",
-				"time":"11:50am"
+				"date": "05-12-2014",
+				"time": "11:50am"
 			}
 		];
 		var expect = [
@@ -67,8 +67,8 @@ describe("formatDates function", function () {
 	it("should handle times with no leading 0", function () {
 		var data = [
 			{
-				"date":"05-13-2014",
-				"time":"5:30am"
+				"date": "05-13-2014",
+				"time": "5:30am"
 			}
 		];
 		var expect = [
@@ -82,8 +82,8 @@ describe("formatDates function", function () {
 	it("should convert pm times to military time", function () {
 		var data = [
 			{
-				"date":"05-13-2014",
-				"time":"2:30pm"
+				"date": "05-13-2014",
+				"time": "2:30pm"
 			}
 		];
 		var expect = [
