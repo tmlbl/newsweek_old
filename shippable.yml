@@ -7,6 +7,7 @@ node_js:
 before_script:
   - wget http://s3.amazonaws.com/influxdb/influxdb_latest_amd64.deb
   - sudo dpkg -i influxdb_latest_amd64.deb
+  - sudo service influxdb start
 
 script:
   - grunt test
