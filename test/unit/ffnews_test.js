@@ -1,12 +1,14 @@
-var should = require("should"),
+var chai = require("chai"),
+		should = chai.should(),
+		expect = chai.expect,
 		news = require("../../modules/ffnews");
 
 describe("Forex Factory news module", function () {
-	it("should get valid data", function () {
-		news(function (err, data) {
-			err.should.equal(null);
+	it("should get valid data", function (done) {
+		news.getNews(function (err, data) {
+			expect(err).to.equal(null);
 			data.should.be.an("object");
-			data[0].should.be.an("object");
+			done();
 		});
 	});
 });
@@ -48,7 +50,7 @@ describe("CleanJSON function", function () {
 	});
 });
 
-describe("formatDates function", function () {
+describe("FormatDates function", function () {
 	it("should parse date info to timestamp", function () {
 		var data = [
 			{

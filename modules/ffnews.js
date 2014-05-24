@@ -1,17 +1,19 @@
 var xml = require("xml2js"),
 		request = require("request"),
 		winston = require("winston"),
-    db = require("../db/db.js");
+    db = require("../db/db.js").db;
 
 module.exports = function (cb) {
 	getNews(function (err, news) {
 		news = cleanJSON(news);
 		news = formatDates(news);
-    winston.info(news[0]);
-    news = checkDates(news);
-    //winston.info(news[0]);
-		db.save("ffnews", news);
-    cb(null, news);
+		news = checkDates(news);
+		db.writePoints("ffnews", news, {}, function (err) {
+			if (err) {
+				winston.error("Error saving items to db", err);
+			}
+		});
+		cb(null, news);
 	});
 };
 
@@ -44,13 +46,12 @@ module.exports.getNews = getNews;
  * of length 1 as values. We'll flatten those to strings,
  * and return an array of event objects.
  * @param {Object} json
- * @returns {Object} clean json
+ * @returns {Array} json array of events
  */
 function cleanJSON (json) {
+	var res = [];
 	if (json && json.weeklyevents) {
 		json = json.weeklyevents.event;
-	} else {
-		return false;
 	}
 	for (var i in json) {
 		if (json.hasOwnProperty(i)) {
@@ -61,9 +62,10 @@ function cleanJSON (json) {
 					}
 				}
 			}
+			res.push(json[i]);
 		}
 	}
-	return json;
+	return res;
 }
 module.exports.cleanJSON = cleanJSON;
 
@@ -83,6 +85,7 @@ function formatDates (events) {
 		}
 		el.date += "T";
 		if (el.time) {
+			el.old = el.time;
 			if (el.time.length < 7) {
 				time = "0" + el.time;
 				el.time = time;
@@ -95,28 +98,32 @@ function formatDates (events) {
     } else if (pm !== -1) {
       time = el.time.slice(0, pm);
 			time = time.split(":");
-			time[0] = parseInt(time[0]) + 12;
+			time[0] = parseInt(time[0]);
+			if (time[0] != 12) {
+				time[0] += 12;
+			}
 			el.time = time.join(":");
-    }
+		}
 		time = Date.parse(el.date + el.time);
-    el.time = time;
-  });
-  return events;
+		el.time = time;
+	});
+	return events;
 }
 module.exports.formatDates = formatDates;
 
 /**
  * Before saving, strip out any events that evaluated
  * to an invalid time
+ * @param {Array} events JSON Array of forex events
+ * @returns {Array} events Minus those whose time
+ * evaluates to NaN
  */
 function checkDates (events) {
-  for (var i = events.length - 1; i >= 0; i--) {
-    //winston.info(events[i]);
-    if (events[i] && isNaN(events[i].time)) {
-      winston.error("Found null time");
-      events.splice(i, 1);
-    }
-  }
-  return events;
+	for (var i = events.length - 1; i >= 0; i--) {
+		if (events[i] && isNaN(events[i].time)) {
+			winston.error("Found NaN time");
+			events.splice(i, 1);
+		}
+	}
+	return events;
 }
-

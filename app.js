@@ -1,7 +1,6 @@
 var express = require("express"),
 		news = require("./modules/ffnews"),
 		winston = require("winston"),
-    db = require("db/db"),
 		app = express();
 
 app.use("/static", express.static(__dirname + "/static"));
@@ -20,12 +19,9 @@ app.get("/", function (req, res) {
 app.get("/api/news", function (req, res) {
 	news(function (err, data) {
 		if (err) {
+			winston.error(err);
 			res.send(500, err);
 		}
-    //data = news.cleanJSON(data);
-    //data = news.formatDates(data);
-    //data = news.checkDates(data);
-    //db.save("ffnews", data);
 		res.send(data);
 	});
 });

@@ -1,17 +1,11 @@
 var influx = require("influx"),
     winston = require("winston");
 
-var db = influx("localhost", 8086, "tmlbl", "tmlbl", "forex");
+var env = process.env.NODE_ENV || "test";
+var db;
 
-function save (collection, items) {
-	db.writePoints(collection, items, {}, function (err) {
-		if (err) {
-			winston.error(err, "Error saving events to db");
-		} else {
-			winston.info(items, "Saved items to db");
-		}
-	});
+if (env == "test") {
+	db = influx("localhost", 8086, "tmlbl", "tmlbl", "forex");
 }
 
 module.exports.db = db;
-module.exports.save = save;
