@@ -3,11 +3,15 @@ var xml = require("xml2js"),
 		winston = require("winston"),
     db = require("../db/db.js");
 
-module.exports = function () {
+module.exports = function (cb) {
 	getNews(function (err, news) {
 		news = cleanJSON(news);
 		news = formatDates(news);
+    winston.info(news[0]);
+    news = checkDates(news);
+    //winston.info(news[0]);
 		db.save("ffnews", news);
+    cb(null, news);
 	});
 };
 
@@ -100,4 +104,19 @@ function formatDates (events) {
   return events;
 }
 module.exports.formatDates = formatDates;
+
+/**
+ * Before saving, strip out any events that evaluated
+ * to an invalid time
+ */
+function checkDates (events) {
+  for (var i = events.length - 1; i >= 0; i--) {
+    //winston.info(events[i]);
+    if (events[i] && isNaN(events[i].time)) {
+      winston.error("Found null time");
+      events.splice(i, 1);
+    }
+  }
+  return events;
+}
 

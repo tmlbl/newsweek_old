@@ -1,4 +1,5 @@
-var influx = require("influx");
+var influx = require("influx"),
+    winston = require("winston");
 
 var db = influx("localhost", 8086, "tmlbl", "tmlbl", "forex");
 
