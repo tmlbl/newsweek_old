@@ -7,7 +7,7 @@ module.exports = function (grunt) {
 			sampledata: {
 				cmd: "node",
 				args: [
-						"modules/ffnews_genTestData.js"
+						"modules/ffnews/ffnews_genTestData.js"
 				]
 			}
 		},

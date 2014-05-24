@@ -1,7 +1,7 @@
 var chai = require("chai"),
 		should = chai.should(),
 		expect = chai.expect,
-		news = require("../../modules/ffnews");
+		news = require("../../modules/ffnews/ffnews");
 
 describe("Forex Factory news module", function () {
 	it("should get valid data", function (done) {

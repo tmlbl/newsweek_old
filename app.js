@@ -1,5 +1,5 @@
 var express = require("express"),
-		news = require("./modules/ffnews"),
+		news = require("./modules/ffnews/ffnews"),
 		winston = require("winston"),
 		app = express();
 

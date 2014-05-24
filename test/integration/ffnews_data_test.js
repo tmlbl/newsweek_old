@@ -3,12 +3,12 @@ var chai = require("chai"),
 		expect = chai.expect,
 		fs = require("fs"),
 		path = require("path"),
-		news = require("../../modules/ffnews");
+		news = require("../../modules/ffnews/ffnews");
 
 describe("Live data set", function () {
 	var data;
 	it("should load and parse data", function (done) {
-		fs.readFile(path.resolve("modules/output"), "utf8", function (err, file) {
+		fs.readFile(path.resolve("modules/ffnews/output"), "utf8", function (err, file) {
 			if (err) {
 				console.error("There was an error loading the sample data file:");
 				throw err;

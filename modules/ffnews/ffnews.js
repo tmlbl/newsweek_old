@@ -1,7 +1,7 @@
 var xml = require("xml2js"),
 		request = require("request"),
 		winston = require("winston"),
-    db = require("../db/db.js").db;
+    db = require("../../db/db.js");
 
 module.exports = function (cb) {
 	getNews(function (err, news) {
@@ -10,7 +10,9 @@ module.exports = function (cb) {
 		news = checkDates(news);
 		db.writePoints("ffnews", news, {}, function (err) {
 			if (err) {
-				winston.error("Error saving items to db", err);
+				winston.error("Error saving events to db", err);
+			} else {
+				winston.info("Saved events to db");
 			}
 		});
 		cb(null, news);
