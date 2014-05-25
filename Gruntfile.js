@@ -5,47 +5,63 @@ module.exports = function (grunt) {
 				failOnError: true
 			},
 			sampledata: {
-				cmd: "node",
+				cmd: 'node',
 				args: [
-						"modules/ffnews/ffnews_genTestData.js"
+						'modules/ffnews/ffnews_genTestData.js'
 				]
 			}
 		},
 		env: {
 			test: {
-				NODE_ENV: "test"
+				NODE_ENV: 'test'
 			}
 		},
 		simplemocha: {
 			options: {
 				globals: [
-					"should"
+					'should'
 				],
 				timeout: 5000,
 				ignoreLeaks: false,
-				ui: "bdd",
-				reporter: "spec"
+				ui: 'bdd',
+				reporter: 'spec'
 			},
 			unit: {
 				src: [
-					"test/unit/*.js"
+					'test/unit/*.js'
 				]
 			},
 			integration: {
 				src: [
-						"test/integration/*.js"
+					'test/integration/*.js'
 				]
+			},
+			e2e: {
+				src: [
+					'test/endtoend/*.js'
+				]
+			}
+		},
+		express: {
+			test: {
+				options: {
+					script: './app.js',
+					port: 8080
+				}
 			}
 		}
 	});
-	grunt.loadNpmTasks("grunt-simple-mocha");
-	grunt.loadNpmTasks("grunt-run");
-	grunt.loadNpmTasks("grunt-env");
+	grunt.loadNpmTasks('grunt-simple-mocha');
+	grunt.loadNpmTasks('grunt-express-server');
+	grunt.loadNpmTasks('grunt-run');
+	grunt.loadNpmTasks('grunt-env');
 	var test = [
-		"env:test",
-		"simplemocha:unit",
-		"run:sampledata",
-		"simplemocha:integration"
+		'env:test',
+		'simplemocha:unit',
+		'run:sampledata',
+		'simplemocha:integration',
+		'express:test',
+		'simplemocha:e2e'
 	];
-	grunt.registerTask("test", test);
+	grunt.registerTask('test', test);
 };

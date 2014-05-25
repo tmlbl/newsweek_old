@@ -1,23 +1,17 @@
 var xml = require('xml2js'),
 		request = require('request'),
-		winston = require('winston'),
-    db = require('../../db/db.js');
+		winston = require('winston');
 
-module.exports = function (cb) {
+function fetch (cb) {
 	getNews(function (err, news) {
+		if (err) cb(err, null);
 		news = cleanJSON(news);
 		news = formatDates(news);
 		news = checkDates(news);
-		db.insert('ffnews', news, function (err) {
-			if (err) {
-				winston.error('Error saving events to db', err);
-			} else {
-				winston.info('Saved events to db');
-			}
-		});
 		cb(null, news);
 	});
 };
+module.exports.fetch = fetch;
 
 /**
  * Gets the weekly forex news information from Forex Factory

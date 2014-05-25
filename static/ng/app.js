@@ -1,1 +1,1 @@
-var newsweek = angular.module("newsweek", []);
+var newsweek = angular.module('newsweek', []);

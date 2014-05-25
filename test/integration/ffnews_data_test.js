@@ -7,19 +7,13 @@ var chai = require('chai'),
 		news = require('../../modules/ffnews/ffnews');
 
 function cleanUp (cb) {
-	db.dropSeries('test', function (err) {
-		if (err) throw err;
-		db.query('SELECT * FROM test;', function (err, data) {
-			expect(data.length).to.equal(0);
-			cb();
-		});
-	});
+	
 }
 
 describe('Live data set', function () {
 	var data;
 	it('should load and parse data', function (done) {
-		fs.readFile(path.resolve('modules/ffnews/output'), 'utf8', function (err, file) {
+		fs.readFile(path.resolve('test/integration/sampledata'), 'utf8', function (err, file) {
 			if (err) {
 				console.error('There was an error loading the sample data file:');
 				throw err;
@@ -50,18 +44,6 @@ describe('Live data set', function () {
 				console.error('Badly parsed datetime: ' + el.date + ' ' + el.old);
 			}
 			expect(is).to.equal(false);
-		});
-	});
-	it('should save the events to db', function () {
-		var events = data.weeklyevents.event;
-		cleanUp(function () {
-			db.insert('test', events, function (err) {
-				expect(err).to.equal(null);
-				db.query('select * from test;', function (err, data) {
-					expect(data.length > 0).to.equal(true);
-					cleanUp(function () {});
-				});
-			});
 		});
 	});
 });

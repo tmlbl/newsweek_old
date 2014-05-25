@@ -1,36 +1,37 @@
-var influx = require('influx'),
+var mongoose = require('mongoose'),
     winston = require('winston');
 
-var db;
+var db = {};
 
-db = influx('localhost', 8086, 'root', 'root', 'forex');
+mongoose.connect('mongodb://localhost/forex', function (err) {
+  if (!err) {
+    winston.info('Connected to MongoDB');
+  } else {
+    throw err;
+  }
+});
 
-/**
- * Insert queries for each point and tests if it already
- * exists before inserting.
- * @param {String} collection
- * @param {Array} points
- * @param {Function} cb
- */
-db.insert = function (collection, points, cb) {
-	points.forEach(function (ev, ix, arr) {
-		var q = 'select 1 from ' + collection;
-		q += ' where title = \'' + ev.title;
-		q += '\';';
-		db.query(q, function (err, data) {
-			if (data.length < 1) {
-				db.writePoint(collection, ev, function (err) {
-					if (ev.title == arr[arr.length - 1].title) {
-						if (err) {
-							cb(err);
-						} else {
-							cb(null);
-						}
+db.NewsEvent = require('./models/news');
+
+db.insert = function (events, cb) {
+	events.forEach(function (ev) {
+		db.NewsEvent.find({ title: ev.title, time: ev.time }, function (err, doc) {
+			if (err) {
+				winston.error(err);
+				cb(err);
+			}
+			if (doc.length < 1) {
+				var news = new db.NewsEvent(ev);
+				news.save(function (err) {
+					if (err) {
+						winston.error(err);
+						cb(err);
 					}
 				});
 			}
 		});
 	});
+	cb(null);
 };
 
 module.exports = db;

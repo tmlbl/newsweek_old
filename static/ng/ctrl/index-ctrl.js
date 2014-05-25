@@ -1,3 +1,3 @@
-newsweek.controller("indexCtrl", ["$scope", function ($scope) {
-	$scope.appName = "Newsweek";
+newsweek.controller('indexCtrl', ['$scope', function ($scope) {
+	$scope.appName = 'Newsweek';
 }]);

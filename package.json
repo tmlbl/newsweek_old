@@ -6,8 +6,8 @@
     "request": "^2.34.0",
     "winston": "^0.7.3",
     "xml2js": "^0.4.2",
-    "influx": "^0.4.0",
-    "node-schedule": "^0.1.13"
+    "node-schedule": "^0.1.13",
+    "mongoose": "^3.8.11"
   },
   "devDependencies": {
     "grunt": "^0.4.4",
@@ -15,6 +15,8 @@
     "mocha": "^1.18.2",
     "chai": "^1.9.1",
     "grunt-run": "^0.2.2",
-    "grunt-env": "^0.4.1"
+    "grunt-env": "^0.4.1",
+    "superagent": "^0.18.0",
+    "grunt-express-server": "^0.4.17"
   }
 }
