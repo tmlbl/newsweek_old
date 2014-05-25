@@ -1,9 +1,9 @@
-var influx = require("influx"),
-    winston = require("winston");
+var influx = require('influx'),
+    winston = require('winston');
 
 var db;
 
-db = influx("localhost", 8086, "root", "root", "forex");
+db = influx('localhost', 8086, 'root', 'root', 'forex');
 
 /**
  * Insert queries for each point and tests if it already
@@ -13,18 +13,19 @@ db = influx("localhost", 8086, "root", "root", "forex");
  * @param {Function} cb
  */
 db.insert = function (collection, points, cb) {
-	points.forEach(function (pt, index) {
-		var query = "SELECT 1 FROM ";
-		query += collection;
-		query += " WHERE title = '";
-		query += pt.title.toString();
-		query += "';";
-		db.query(query, function (err, data) {
+	points.forEach(function (ev, ix, arr) {
+		var q = 'select 1 from ' + collection;
+		q += ' where title = \'' + ev.title;
+		q += '\';';
+		db.query(q, function (err, data) {
 			if (data.length < 1) {
-				db.writePoint(collection, pt, function (err) {
-					if (err) throw err;
-					if (index == points.length - 1) {
-						cb();
+				db.writePoint(collection, ev, function (err) {
+					if (ev.title == arr[arr.length - 1].title) {
+						if (err) {
+							cb(err);
+						} else {
+							cb(null);
+						}
 					}
 				});
 			}

@@ -1,0 +1,22 @@
+{
+  "name": "forex",
+  "version": "0.0.0",
+  "main": "static/lib",
+  "authors": [
+    "Tim Lebel"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.2.16",
+    "lodash": "~2.4.1",
+    "d3": "~3.4.8"
+  }
+}

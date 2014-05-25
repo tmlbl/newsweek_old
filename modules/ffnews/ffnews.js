@@ -1,18 +1,18 @@
-var xml = require("xml2js"),
-		request = require("request"),
-		winston = require("winston"),
-    db = require("../../db/db.js");
+var xml = require('xml2js'),
+		request = require('request'),
+		winston = require('winston'),
+    db = require('../../db/db.js');
 
 module.exports = function (cb) {
 	getNews(function (err, news) {
 		news = cleanJSON(news);
 		news = formatDates(news);
 		news = checkDates(news);
-		db.writePoints("ffnews", news, {}, function (err) {
+		db.insert('ffnews', news, function (err) {
 			if (err) {
-				winston.error("Error saving events to db", err);
+				winston.error('Error saving events to db', err);
 			} else {
-				winston.info("Saved events to db");
+				winston.info('Saved events to db');
 			}
 		});
 		cb(null, news);
@@ -26,7 +26,7 @@ module.exports = function (cb) {
  * @returns {Object} news -- json of week's news
  */
 function getNews (cb) {
-	var url = "http://www.forexfactory.com/ffcal_week_this.xml";
+	var url = 'http://www.forexfactory.com/ffcal_week_this.xml';
 	request.get(url, function (err, res, body) {
 		if (err) cb(err, null);
 		if (res.statusCode == 200) {
@@ -81,30 +81,30 @@ function formatDates (events) {
   var am, pm, time;
   events.forEach(function (el) {
 		if (el.date) {
-			var d = el.date.split("-");
+			var d = el.date.split('-');
 			d = [ d[2], d[0], d[1] ];
-			el.date = d.join("-");
+			el.date = d.join('-');
 		}
-		el.date += "T";
+		el.date += 'T';
 		if (el.time) {
 			el.old = el.time;
 			if (el.time.length < 7) {
-				time = "0" + el.time;
+				time = '0' + el.time;
 				el.time = time;
 			}
-			am = el.time.indexOf("am");
-			pm = el.time.indexOf("pm");
+			am = el.time.indexOf('am');
+			pm = el.time.indexOf('pm');
 		}
     if (am !== -1) {
       el.time = el.time.slice(0, am);
     } else if (pm !== -1) {
       time = el.time.slice(0, pm);
-			time = time.split(":");
+			time = time.split(':');
 			time[0] = parseInt(time[0]);
 			if (time[0] != 12) {
 				time[0] += 12;
 			}
-			el.time = time.join(":");
+			el.time = time.join(':');
 		}
 		time = Date.parse(el.date + el.time);
 		el.time = time;
@@ -123,9 +123,10 @@ module.exports.formatDates = formatDates;
 function checkDates (events) {
 	for (var i = events.length - 1; i >= 0; i--) {
 		if (events[i] && isNaN(events[i].time)) {
-			winston.error("Found NaN time");
+			winston.error('Found NaN time');
 			events.splice(i, 1);
 		}
 	}
 	return events;
 }
+module.exports.checkDates = checkDates;

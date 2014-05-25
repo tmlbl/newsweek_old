@@ -4,4 +4,7 @@ node_modules
 .idea
 modules/ffnews/output
 output
+static/lib/d3
+static/lib/angular
+static/lib/lodash
 

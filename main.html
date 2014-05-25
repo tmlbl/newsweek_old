@@ -1,16 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="newsweek">
 <head lang="en">
 	<meta charset="UTF-8">
-	<title></title>
+	<title>Newsweek</title>
+	<link rel="stylesheet" href="static/lib/flatly.css">
 </head>
 <body>
-	<h1>Newsweek</h1>
-	<div id="chart"></div>
-	<script src="static/lib/angular.js"></script>
-	<script src="static/lib/d3.js"></script>
-	<script src="static/lib/lodash.js"></script>
-	<script src="static/sample_data/candles.js"></script>
-	<script src="static/d3/candles.js"></script>
+
+<div class="navbar navbar-default navbar-fixed-top" ng-controller="indexCtrl">
+	<a href="/" class="navbar-brand">{{ appName }}</a>
+</div>
+<script src="static/lib/angular/angular.js"></script>
+<script src="static/lib/d3/d3.js"></script>
+<script src="static/lib/lodash/dist/lodash.js"></script>
+<script src="static/ng/app.js"></script>
+<script src="static/ng/ctrl/index-ctrl.js"></script>
+
 </body>
 </html>

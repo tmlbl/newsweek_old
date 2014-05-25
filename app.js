@@ -16,15 +16,7 @@ app.get("/", function (req, res) {
 	});
 });
 
-app.get("/api/news", function (req, res) {
-	news(function (err, data) {
-		if (err) {
-			winston.error(err);
-			res.send(500, err);
-		}
-		res.send(data);
-	});
-});
+require("api/news_routes")(app);
 
 app.listen(8080, function () {
 	console.log("Listening on 8080");
