@@ -1,5 +1,29 @@
 <div class="row">
-	<div class="col-xs-6">
+	<div class="col-md-6">
+		<div class="container-fluid">
+			<div class="row">
+				<h3>Current Time:</h3>
+				<h1 class="clock">
+					{{ curTime | date : 'M/dd HH:mm:ss' }}
+				</h1>
+			</div>
+		</div>
+		<h3>Next Trade: <small>{{ nextEvent.title }}</small></h3>
+		<table class="table">
+			<tr>
+				<td>Symbol: {{ nextEvent.country }}</td>
+				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Impact: {{ nextEvent.impact }}</td>
+			</tr>
+			<tr>
+				<td>Price: {{ livePrice }}</td>
+				<td>Time: {{ nextEvent.time | date : 'M/dd HH:mm' }}</td>
+			</tr>
+		</table>
+		<div class="row">
+			<div chart symbol="EUR_USD"></div>
+		</div>
+	</div>
+	<div class="col-md-6">
 		<div class="row">
 			<div class="col-xs-8">
 				<h1>Events</h1>
@@ -11,6 +35,11 @@
 					<option value="USD">USD</option>
 					<option value="JPY">JPY</option>
 					<option value="CHF">CHF</option>
+					<option value="GBP">GBP</option>
+					<option value="CAD">CAD</option>
+					<option value="CNY">CNY</option>
+					<option value="AUD">AUD</option>
+					<option value="NZD">NZD</option>
 				</select>
 			</div>
 		</div>
@@ -37,27 +66,6 @@
 					</td>
 				</tr>
 			</tbody>
-		</table>
-	</div>
-	<div class="col-xs-6">
-		<div class="container-fluid">
-			<div class="row">
-				<h3>Current Time:</h3>
-				<h1 class="clock">
-					{{ curTime | date : 'M/dd HH:mm:ss' }}
-				</h1>
-			</div>
-		</div>
-		<h3>Next: <small>{{ nextEvent.title }}</small></h3>
-		<table class="table">
-			<tr>
-				<td>Symbol: {{ nextEvent.country }}</td>
-				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Impact: {{ nextEvent.impact }}</td>
-			</tr>
-			<tr>
-				<td>Trading: no</td>
-				<td>Time: {{ nextEvent.time | date : 'M/dd HH:mm' }}</td>
-			</tr>
 		</table>
 	</div>
 </div>

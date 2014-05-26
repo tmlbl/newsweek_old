@@ -16,6 +16,18 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 		$scope.curTime = Date.now();
 	}
 	curTime();
+	// Gets a live instrument price for next event
+	function livePrice () {
+		$timeout(livePrice, 5000);
+		if ($scope.nextEvent) {
+			var url = 'http://api-sandbox.oanda.com/v1/prices?instruments=EUR_USD';
+			$http({ method: 'GET', url: url })
+				.success(function (data) {
+					$scope.livePrice = data.prices[0].bid;
+				});
+		}
+	}
+	livePrice();
 	// Opens the new trade modal
 	$scope.newTrade = function (ev) {
 		var instance = $modal.open({
@@ -35,7 +47,9 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 		_.map(events, function (ev) {
 			times.push(ev.time);
 			if (!next || next > ev.time) {
-				next = ev.time;
+				if (ev.impact != 'Holiday') {
+					next = ev.time;
+				}
 			}
 		});
 		return events[times.indexOf(next)];

@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost/forex', function (err) {
 });
 
 db.NewsEvent = require('./models/news');
+db.Trade = require('./models/trade');
 
 db.insert = function (events, cb) {
 	events.forEach(function (ev) {

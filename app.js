@@ -18,6 +18,7 @@ app.get('/', function (req, res) {
 });
 
 require('api/news_routes')(app);
+require('api/trade_routes')(app);
 
 var port = process.env.PORT || 8080;
 app.listen(port, function () {
