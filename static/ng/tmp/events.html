@@ -1,0 +1,63 @@
+<div class="row">
+	<div class="col-xs-6">
+		<div class="row">
+			<div class="col-xs-8">
+				<h1>Events</h1>
+			</div>
+			<div class="col-xs-4">
+				<select id="symbols" class="form-control pull-right" ng-model="sym">
+					<option value=""></option>
+					<option value="EUR">EUR</option>
+					<option value="USD">USD</option>
+					<option value="JPY">JPY</option>
+					<option value="CHF">CHF</option>
+				</select>
+			</div>
+		</div>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Title</th>
+					<th>Symbol</th>
+					<th>Impact</th>
+					<th>Time</th>
+					<th>Trading</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="n in latestNews | orderBy:'time' | filter:sym" class="{{ n.color }}">
+					<td>{{ n.title }}</td>
+					<td>{{ n.country }}</td>
+					<td style="color:{{ n.color }}">{{ n.impact }}</td>
+					<td>{{ n.time | date : 'M/dd HH:mm' }}</td>
+					<td>
+						<button class="btn btn-default" ng-click="newTrade(n)">
+							No
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="col-xs-6">
+		<div class="container-fluid">
+			<div class="row">
+				<h3>Current Time:</h3>
+				<h1 class="clock">
+					{{ curTime | date : 'M/dd HH:mm:ss' }}
+				</h1>
+			</div>
+		</div>
+		<h3>Next: <small>{{ nextEvent.title }}</small></h3>
+		<table class="table">
+			<tr>
+				<td>Symbol: {{ nextEvent.country }}</td>
+				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Impact: {{ nextEvent.impact }}</td>
+			</tr>
+			<tr>
+				<td>Trading: no</td>
+				<td>Time: {{ nextEvent.time | date : 'M/dd HH:mm' }}</td>
+			</tr>
+		</table>
+	</div>
+</div>

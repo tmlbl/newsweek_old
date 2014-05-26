@@ -7,4 +7,6 @@ output
 static/lib/d3
 static/lib/angular
 static/lib/lodash
+static/lib/angular-bootstrap
+static/lib/angular-route
 

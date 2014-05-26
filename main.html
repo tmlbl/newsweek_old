@@ -4,17 +4,32 @@
 	<meta charset="UTF-8">
 	<title>Newsweek</title>
 	<link rel="stylesheet" href="static/lib/flatly.css">
+	<link rel="stylesheet" href="static/skin.css">
 </head>
 <body>
-
-<div class="navbar navbar-default navbar-fixed-top" ng-controller="indexCtrl">
-	<a href="/" class="navbar-brand">{{ appName }}</a>
+<!-- Navbar -->
+<div class="navbar navbar-default navbar-fixed-top">
+	<a href="/" class="navbar-brand">Newsweek</a>
+	<ul class="nav navbar-nav">
+		<li><a href="/#/events">Events</a></li>
+		<li><a href="/#/positions">Positions</a></li>
+		<li><a href=""></a></li>
+	</ul>
 </div>
+<!-- Col 1: Events Table -->
+<div class="container-fluid">
+	<div ng-view></div>
+</div>
+
 <script src="static/lib/angular/angular.js"></script>
+<script src="static/lib/angular-route/angular-route.js"></script>
+<script src="static/lib/angular-bootstrap/ui-bootstrap.js"></script>
+<script src="static/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
 <script src="static/lib/d3/d3.js"></script>
 <script src="static/lib/lodash/dist/lodash.js"></script>
 <script src="static/ng/app.js"></script>
-<script src="static/ng/ctrl/index-ctrl.js"></script>
+<script src="static/ng/ctrl/event-ctrl.js"></script>
+<script src="static/ng/ctrl/trade-ctrl.js"></script>
 
 </body>
 </html>
