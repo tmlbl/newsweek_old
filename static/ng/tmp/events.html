@@ -8,20 +8,42 @@
 				</h1>
 			</div>
 		</div>
-		<h3>Next Trade: <small>{{ nextEvent.title }}</small></h3>
+		<h3>Next Trade: <small>{{ nextTrade.event.title }}</small></h3>
 		<table class="table">
 			<tr>
-				<td>Symbol: {{ nextEvent.country }}</td>
-				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Impact: {{ nextEvent.impact }}</td>
+				<td>Symbol: {{ nextTrade.instrument | symbol }}</td>
+				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Units: {{ nextTrade.units }}</td>
 			</tr>
 			<tr>
 				<td>Price: {{ livePrice }}</td>
-				<td>Time: {{ nextEvent.time | date : 'M/dd HH:mm' }}</td>
+				<td>Time: {{ nextTrade.time | date : 'M/dd HH:mm' }}</td>
 			</tr>
 		</table>
-		<div class="row">
-			<div chart symbol="EUR_USD"></div>
-		</div>
+		<h1>Trades</h1>
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>Event</th>
+					<th>Symbol</th>
+					<th>Time</th>
+					<th>Units</th>
+					<th>Edit</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="trade in trades | orderBy:'time'">
+					<td>{{ trade.event.title }}</td>
+					<td>{{ trade.instrument | symbol }}</td>
+					<td>{{ trade.time | date : 'M/dd HH:mm' }}</td>
+					<td>{{ trade.units }}</td>
+					<td>
+						<button class="btn btn-default">
+							Edit
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</div>
 	<div class="col-md-6">
 		<div class="row">
@@ -60,8 +82,11 @@
 					<td style="color:{{ n.color }}">{{ n.impact }}</td>
 					<td>{{ n.time | date : 'M/dd HH:mm' }}</td>
 					<td>
-						<button class="btn btn-default" ng-click="newTrade(n)">
+						<button class="btn btn-default" ng-click="newTrade(n)" ng-if="!n.trading">
 							No
+						</button>
+						<button class="btn btn-success" ng-click="newTrade(n)" ng-if="n.trading">
+							Yes
 						</button>
 					</td>
 				</tr>

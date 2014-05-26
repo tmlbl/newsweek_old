@@ -4,11 +4,17 @@ newsweek.controller('eventCtrl',
 function eventCtrl ($scope, $http, $timeout, $modal) {
 	$scope.appName = 'Newsweek';
 	// Gets the latest news
-	$http({ method: 'GET', url: '/api/news/latest' })
+	$http.get('/api/events/latest')
 		.success(function (data) {
 			data = color(data);
 			$scope.latestNews = data;
 			$scope.nextEvent = nextEvent(data);
+		});
+	// Gets the latest trades
+	$http.get('/api/trades/latest')
+		.success(function (data) {
+			$scope.trades = data;
+			$scope.nextTrade = nextEvent(data);
 		});
 	// Creates a live time value
 	function curTime () {
@@ -20,7 +26,8 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 	function livePrice () {
 		$timeout(livePrice, 5000);
 		if ($scope.nextEvent) {
-			var url = 'http://api-sandbox.oanda.com/v1/prices?instruments=EUR_USD';
+			var url = 'http://api-sandbox.oanda.com/v1/prices?instruments=';
+			if ($scope.nextTrade) url += $scope.nextTrade.instrument;
 			$http({ method: 'GET', url: url })
 				.success(function (data) {
 					$scope.livePrice = data.prices[0].bid;
@@ -36,6 +43,9 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 			resolve: {
 				event: function () {
 					return ev;
+				},
+				trades: function () {
+					return $scope.trades;
 				}
 			}
 		});

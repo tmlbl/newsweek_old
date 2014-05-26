@@ -1,9 +1,11 @@
 var express = require('express'),
 		news = require('./modules/ffnews/ffnews'),
 		winston = require('winston'),
+		bodyParser = require('body-parser'),
 		app = express();
 
 app.use('/static', express.static(__dirname + '/static'));
+app.use(bodyParser());
 
 winston.add(winston.transports.File, { filename: 'winston.log' });
 winston.remove(winston.transports.Console);
@@ -17,7 +19,7 @@ app.get('/', function (req, res) {
 	});
 });
 
-require('api/news_routes')(app);
+require('api/event_routes')(app);
 require('api/trade_routes')(app);
 
 var port = process.env.PORT || 8080;
