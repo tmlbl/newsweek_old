@@ -24,7 +24,7 @@ module.exports = function (grunt) {
 				timeout: 5000,
 				ignoreLeaks: false,
 				ui: 'bdd',
-				reporter: 'spec'
+				reporter: 'xunit-file'
 			},
 			unit: {
 				src: [
