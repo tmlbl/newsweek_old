@@ -1,5 +1,4 @@
 var express = require('express'),
-		news = require('./modules/ffnews/ffnews'),
 		winston = require('winston'),
 		bodyParser = require('body-parser'),
 		app = express();
@@ -14,13 +13,13 @@ winston.info('Starting the application...');
 app.get('/', function (req, res) {
 	res.sendfile('./main.html', {}, function (err) {
 		if (!err) {
-			winston.info('User accessed index.html');
+			winston.info('User accessed main.html');
 		}
 	});
 });
 
-require('api/event_routes')(app);
-require('api/trade_routes')(app);
+require('./api/event_routes')(app);
+require('./api/trade_routes')(app);
 
 var port = process.env.PORT || 8080;
 app.listen(port, function () {

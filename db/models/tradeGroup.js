@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
 		Schema = mongoose.Schema;
 
-var TradeGroupSchema = new Schema({
+var TradeGroupSchema = new mongoose.Schema({
 	'time'       : { type: Date, required: true, index: true },
 	'event'      : { type: Schema.ObjectId, required: true, ref: 'NewsEvent' },
 	'instrument' : { type: String, required: true },

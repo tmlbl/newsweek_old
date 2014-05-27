@@ -1,7 +1,6 @@
-var mongoose = require('mongoose'),
-		Schema = mongoose.Schema;
+var mongoose = require('mongoose');
 
-var TradeSchema = new Schema({
+var TradeSchema = new mongoose.Schema({
 	'time'         : { type: Date, required: true, index: true },
 	'instrument'   : { type: String, required: true },
 	'units'        : { type: Number, required: true },

@@ -6,7 +6,6 @@ module.exports = function (app) {
 	// and returns the result.
 	// TODO: remove - this will be a scheduled process
 	app.get('/api/events/fetch', function (req, res) {
-		var n;
 		news.fetch(function (err, events) {
 			if (err) res.send(500, err);
 			db.insert(events, function (err) {
