@@ -25,7 +25,7 @@ module.exports = function (app) {
 	// REST routes
 	app.get('/api/events/:id', function (req, res) {
 		var id = req.params.id;
-		db.NewsEvent.findById({ _id: id }, function (err, ev) {
+		db.NewsEvent.findById(id, function (err, ev) {
 			if (err) res.send(500, err);
 			res.send(200, ev);
 		});
