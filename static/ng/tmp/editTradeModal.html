@@ -1,0 +1,16 @@
+<div class="modal-header">
+	<h3 class="modal-title">Edit Trade</h3>
+</div>
+<div class="modal-body">
+	<form action="">
+		<div class="form-group">
+			<label for="units">Units:</label>
+			<input class="form-control" type="text" ng-model="trade.units"/>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-primary" ng-click="submit()">Update</button>
+	<button class="btn btn-danger" ng-click="delete()">Delete</button>
+	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

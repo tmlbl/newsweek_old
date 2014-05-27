@@ -12,7 +12,7 @@
 		<table class="table">
 			<tr>
 				<td>Symbol: {{ nextTrade.instrument | symbol }}</td>
-				<td style="color:{{ nextEvent.color }}" class="{{ n.color }}">Units: {{ nextTrade.units }}</td>
+				<td>Units: {{ nextTrade.units }}</td>
 			</tr>
 			<tr>
 				<td>Price: {{ livePrice }}</td>
@@ -37,7 +37,7 @@
 					<td>{{ trade.time | date : 'M/dd HH:mm' }}</td>
 					<td>{{ trade.units }}</td>
 					<td>
-						<button class="btn btn-default">
+						<button class="btn btn-default" ng-click="editTrade(trade)">
 							Edit
 						</button>
 					</td>

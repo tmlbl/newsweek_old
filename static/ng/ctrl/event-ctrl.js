@@ -38,8 +38,8 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 	// Opens the new trade modal
 	$scope.newTrade = function (ev) {
 		var instance = $modal.open({
-			templateUrl: 'static/ng/tmp/tradeModal.html',
-			controller: 'tradeCtrl',
+			templateUrl: 'static/ng/tmp/newTradeModal.html',
+			controller: 'newTradeCtrl',
 			resolve: {
 				event: function () {
 					return ev;
@@ -49,6 +49,18 @@ function eventCtrl ($scope, $http, $timeout, $modal) {
 				}
 			}
 		});
+	};
+	// Opens the edit trade modal
+	$scope.editTrade = function (trade) {
+		var instance = $modal.open({
+			templateUrl: '/static/ng/tmp/editTradeModal.html',
+			controller: 'editTradeCtrl',
+			resolve: {
+				trade: function () {
+					return trade;
+				}
+			}
+		})
 	};
 	// Finds the nextmost event and returns it
 	function nextEvent (events) {

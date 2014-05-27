@@ -1,7 +1,7 @@
-newsweek.controller('tradeCtrl',
-	['$scope', '$modalInstance', 'event', ,'trades', $http, tradeCtrl]);
+newsweek.controller('newTradeCtrl',
+	['$scope', '$modalInstance', 'event', 'trades', '$http', newTradeCtrl]);
 
-function tradeCtrl ($scope, $modalInstance, event, trades, $http) {
+function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 	$scope.event = event;
 	$scope.trade = {
 		time: event.time,

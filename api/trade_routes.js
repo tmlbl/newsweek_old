@@ -1,4 +1,5 @@
-var db = require('../db/db');
+var db = require('../db/db'),
+    trader = require('../modules/trader/trader');
 
 module.exports = function (app) {
   app.get('/api/trades/latest', function (req, res) {
@@ -21,6 +22,7 @@ module.exports = function (app) {
   		if (err) {
   			res.send(500, err);
   		} else {
+        trader.register(trade);
   			res.send(200);
   		}
   	});
@@ -37,6 +39,7 @@ module.exports = function (app) {
   app.put('/api/trades/:id', function (req, res) {
     var up = req.body;
     if (up._id) delete up._id;
+    if (up.event) delete up.event;
     db.TradeGroup.update({ _id: req.params.id }, up)
       .exec(function (err) {
         if (err) res.send(500, err);
