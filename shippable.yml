@@ -1,10 +1,27 @@
 language: node_js
 
+# Version number
 node_js:
-  - "0.10.28"
+  - 0.10.25
 
+# Mongo binds to 127.0.0.1 by default
 services:
   - mongodb
 
+# The path for Xunit to output test reports
+env:
+  - XUNIT_FILE=shippable/testresults/result.xml
+
+# Create directories for test and coverage reports
+before_script:
+  - mkdir -p shippable/testresults
+  - mkdir -p shippable/codecoverage
+
+# Running the tests with grunt
 script:
   - grunt test
+
+# Tell istanbul to generate a coverage report
+after_script:
+  - ./node_modules/.bin/istanbul cover grunt test -- -u tdd
+  - ./node_modules/.bin/istanbul report cobertura --dir  shippable/codecoverage/

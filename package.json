@@ -1,6 +1,9 @@
 {
   "name": "forex",
   "version": "0.0.1",
+	"scripts": {
+		"test": "grunt test"
+	},
   "dependencies": {
     "express": "^4.1.2",
     "request": "^2.34.0",
