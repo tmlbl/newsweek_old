@@ -1,4 +1,5 @@
 node_modules
+xunit.xml
 *.swp
 *.log
 .idea
