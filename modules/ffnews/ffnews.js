@@ -112,7 +112,7 @@ module.exports.formatDates = formatDates;
  * Before saving, strip out any events that evaluated
  * to an invalid time
  * @param {Array} events JSON Array of forex events
- * @returns {Array} events Minus those whose time
+ * @returns {Array} events minus those whose time
  * evaluates to NaN
  */
 function checkDates (events) {

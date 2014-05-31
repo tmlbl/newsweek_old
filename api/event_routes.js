@@ -23,6 +23,12 @@ module.exports = function (app) {
 		});
 	});
 	// REST routes
+	app.get('/api/events', function (req, res) {
+		db.NewsEvent.find({}, function (err, ev) {
+			if (err) res.send(500, err);
+			res.send(200, ev);
+		});
+	});
 	app.get('/api/events/:id', function (req, res) {
 		var id = req.params.id;
 		db.NewsEvent.findById(id, function (err, ev) {

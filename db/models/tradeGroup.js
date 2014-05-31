@@ -1,12 +1,13 @@
 var mongoose = require('mongoose'),
-		Schema = mongoose.Schema;
+		ObjectId = mongoose.Schema.ObjectId;
 
 var TradeGroupSchema = new mongoose.Schema({
 	'time'       : { type: Date, required: true, index: true },
-	'event'      : { type: Schema.ObjectId, required: true, ref: 'NewsEvent' },
+	'event'      : { type: ObjectId, required: true, ref: 'NewsEvent' },
 	'instrument' : { type: String, required: true },
 	'units'      : { type: Number, required: true },
-	'trades'     : [{ type: Schema.ObjectId }]
+	'user'       : { type: ObjectId, ref: 'User' },
+	'trades'     : [{ type: ObjectId, ref: 'Trade' }]
 });
 
 module.exports = mongoose.model('TradeGroup', TradeGroupSchema);

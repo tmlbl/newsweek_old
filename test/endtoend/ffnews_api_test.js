@@ -11,12 +11,12 @@ describe.only('Forex News API', function () {
 			done();
 		});
 	});
-	it('should return the latest news', function (done) {
-		superagent.get('http://localhost:8080/api/events/latest')
+	it('should return the news', function (done) {
+		superagent.get('http://localhost:8080/api/events')
 			.end(function (err, res) {
 				expect(err).to.equal(null);
 				expect(res.body[0].title).to.be.a('string');
-				obj = res.body[3];
+				obj = res.body[res.body.length - 1];
 				done();
 			});
 	});

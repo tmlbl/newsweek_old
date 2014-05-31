@@ -6,9 +6,9 @@ module.exports = function (app) {
     db.TradeGroup.find({ time: { $gte: Date.now() }})
       .populate('event')
       .exec(function (err, docs) {
-      if (err) res.send(500, err);
-      res.send(200, docs);
-    });
+        if (err) res.send(500, err);
+        res.send(200, docs);
+      });
   });
   app.get('/api/trades', function (req, res) {
   	db.TradeGroup.find({}, function (err, docs) {

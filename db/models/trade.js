@@ -1,6 +1,9 @@
-var mongoose = require('mongoose');
+var mongoose = require('mongoose'),
+		ObjectId = mongoose.Schema.ObjectId;
 
 var TradeSchema = new mongoose.Schema({
+	'user'         : { type: ObjectId, ref: 'User' },
+	'tradeGroup'   : { type: ObjectId, ref: 'TradeGroup' },
 	'time'         : { type: Date, required: true, index: true },
 	'instrument'   : { type: String, required: true },
 	'units'        : { type: Number, required: true },
