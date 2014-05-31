@@ -13,7 +13,7 @@ function register (tradeGroup) {
 module.exports.register = register;
 
 function execute (tradeGroup) {
-	
+	return true;
 }
 
 function createTrade (options) {

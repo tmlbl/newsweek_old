@@ -1,21 +1,6 @@
 var xml = require('xml2js'),
 		request = require('request'),
-		winston = require('winston'),
-		schedule = require('node-schedule');
-
-// Schedules the module to run once a week
-var rule = new schedule.RecurrenceRule();
-rule.dayOfWeek = 0;
-
-schedule.scheduleJob(rule, function () {
-	fetch(function (err, news) {
-		if (err) {
-			winston.error('There was an error fetching weekly news', err);
-		} else {
-			winston.info('Fetched weekly news', news);
-		}
-	})
-});
+		winston = require('winston');
 
 // Aggregate function to fetch and save the news
 function fetch (cb) {

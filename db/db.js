@@ -1,23 +1,28 @@
 var mongoose = require('mongoose'),
-    winston = require('winston');
+		winston = require('winston');
 
 var db = {};
 
 mongoose.connect('mongodb://localhost/forex', function (err) {
-  if (!err) {
-    winston.info('Connected to MongoDB');
-  } else {
-    throw err;
-  }
+	if (!err) {
+		winston.info('Connected to MongoDB');
+	} else {
+		throw err;
+	}
 });
 
 db.NewsEvent = require('./models/news');
 db.Trade = require('./models/trade');
 db.TradeGroup = require('./models/tradeGroup');
+db.User = require('./models/user');
 
 db.insert = function (events, cb) {
 	events.forEach(function (ev) {
-		db.NewsEvent.find({ title: ev.title, time: ev.time }, function (err, doc) {
+		db.NewsEvent.find({
+			title: ev.title,
+			time: ev.time
+		},
+		function (err, doc) {
 			if (err) {
 				winston.error(err);
 				cb(err);

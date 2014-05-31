@@ -1,22 +1,22 @@
 var express = require('express'),
 		winston = require('winston'),
 		bodyParser = require('body-parser'),
+		mongoose = require('mongoose'),
+		session = require('express-session'),
+		cookieParser = require('cookie-parser'),
 		app = express();
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(bodyParser());
+app.use(cookieParser());
+app.use(session({
+	secret: 'gwyneviere'
+}));
 
 winston.add(winston.transports.File, { filename: 'winston.log' });
-winston.remove(winston.transports.Console);
 winston.info('Starting the application...');
 
-app.get('/', function (req, res) {
-	res.sendfile('./main.html', {}, function (err) {
-		if (!err) {
-			winston.info('User accessed main.html');
-		}
-	});
-});
+require('./modules/auth/auth_routes')(app);
 
 require('./api/event_routes')(app);
 require('./api/trade_routes')(app);
