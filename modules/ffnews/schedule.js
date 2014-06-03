@@ -1,6 +1,7 @@
 var schedule = require('node-schedule'),
 		news = require('./ffnews');
 
+// Every Sunday at 5pm
 var rule = new schedule.RecurrenceRule();
 rule.dayOfWeek = 0;
 rule.hour = 17;

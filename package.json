@@ -1,6 +1,8 @@
 {
   "name": "forex",
   "version": "0.0.1",
+  "description": "newsweek",
+  "repository": " git@bitbucket.org:tm-lbl/forex.git",
   "scripts": {
     "test": "grunt test"
   },
@@ -13,7 +15,8 @@
     "mongoose": "^3.8.11",
     "body-parser": "^1.2.0",
     "express-session": "^1.2.1",
-    "cookie-parser": "^1.1.0"
+    "cookie-parser": "^1.1.0",
+    "simple-statistics": "^0.8.1"
   },
   "devDependencies": {
     "chai": "^1.9.1",

@@ -3,7 +3,9 @@ var mongoose = require('mongoose'),
 
 var db = {};
 
-mongoose.connect('mongodb://localhost/forex', function (err) {
+var dbUrl = process.env.MONGODB_URL || 'mongodb://localhost/forex_test';
+
+mongoose.connect(dbUrl, function (err) {
 	if (!err) {
 		winston.info('Connected to MongoDB');
 	} else {
@@ -16,6 +18,7 @@ db.Trade = require('./models/trade');
 db.TradeGroup = require('./models/tradeGroup');
 db.User = require('./models/user');
 
+// Synchronizes news events into the db
 db.insert = function (events, cb) {
 	events.forEach(function (ev) {
 		db.NewsEvent.find({
