@@ -1,6 +1,3 @@
-newsweek.controller('newTradeCtrl',
-	['$scope', '$modalInstance', 'event', 'trades', '$http', newTradeCtrl]);
-
 function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 	$scope.event = event;
 	$scope.trade = {
@@ -17,13 +14,13 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 	];
 	$scope.submit = function () {
 		$http.post('/api/trades', $scope.trade)
-			.success(function (data, status) {
+			.success(function (data) {
 				$scope.trade.event = {
 					title: event.title
 				};
 				trades.push($scope.trade);
 				$http.put('/api/events/' + event._id, { trading: true })
-					.success(function (data, status) {
+					.success(function (data) {
 						event.trading = true;
 						$modalInstance.close();
 					});
@@ -33,3 +30,6 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 		$modalInstance.dismiss('cancel');
 	};
 }
+
+newsweek.controller('newTradeCtrl',
+	['$scope', '$modalInstance', 'event', 'trades', '$http', newTradeCtrl]);

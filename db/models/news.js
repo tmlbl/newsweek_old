@@ -1,5 +1,4 @@
-var mongoose = require('mongoose'),
-		ObjectId = mongoose.Schema.ObjectId;
+var mongoose = require('mongoose');
 
 var EventSchema = new mongoose.Schema({
 	'title'      : { type: String, required: true },
@@ -8,7 +7,7 @@ var EventSchema = new mongoose.Schema({
 	'country'    : { type: String, required: true },
 	'forecast'   : { type: String },
 	'previous'   : { type: String },
-	'trading'    : { type: Boolean }
+	'trading'    : { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('NewsEvent', EventSchema);

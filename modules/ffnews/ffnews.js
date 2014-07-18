@@ -2,18 +2,6 @@ var xml = require('xml2js'),
 		request = require('request'),
 		winston = require('winston');
 
-// Aggregate function to fetch and save the news
-function fetch (cb) {
-	getNews(function (err, news) {
-		if (err) cb(err, null);
-		news = cleanJSON(news);
-		news = formatDates(news);
-		news = checkDates(news);
-		cb(null, news);
-	});
-};
-module.exports.fetch = fetch;
-
 /**
  * Gets the weekly forex news information from Forex Factory
  * and parses it to JSON for consumption.
@@ -23,8 +11,10 @@ module.exports.fetch = fetch;
 function getNews (cb) {
 	var url = 'http://www.forexfactory.com/ffcal_week_this.xml';
 	request.get(url, function (err, res, body) {
-		if (err) cb(err, null);
-		if (res.statusCode == 200) {
+		if (err) {
+			cb(err, null);
+		}
+		if (res.statusCode === 200) {
 			xml.parseString(body, function (err, news) {
 				if (err) {
 					cb(err, null);
@@ -54,7 +44,7 @@ function cleanJSON (json) {
 		if (json.hasOwnProperty(i)) {
 			for (var j in json[i]) {
 				if (json[i].hasOwnProperty(j)) {
-					if (json[i][j].length == 1) {
+					if (json[i][j].length === 1) {
 						json[i][j] = json[i][j][0];
 					}
 				}
@@ -96,7 +86,7 @@ function formatDates (events) {
       time = el.time.slice(0, pm);
 			time = time.split(':');
 			time[0] = parseInt(time[0]);
-			if (time[0] != 12) {
+			if (time[0] !== 12) {
 				time[0] += 12;
 			}
 			el.time = time.join(':');

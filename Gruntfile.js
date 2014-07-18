@@ -16,6 +16,39 @@ module.exports = function (grunt) {
 				NODE_ENV: 'test'
 			}
 		},
+		mongoimport: {
+			options: {
+				db : 'test',
+				host : 'localhost',
+				stopOnError : true,
+				collections : [
+					{
+						name : 'users',
+						type : 'json',
+						file : 'test/seeddata/users.json',
+						jsonArray : true,
+						upsert: true,
+						drop : true
+					},
+					{
+						name : 'tradegroups',
+						type : 'json',
+						file : 'test/seeddata/tradegroups.json',
+						jsonArray : true,
+						upsert: true,
+						drop : true
+					},
+					{
+						name : 'newsevents',
+						type : 'json',
+						file : 'test/seeddata/newsevents.json',
+						jsonArray : true,
+						upsert: true,
+						drop : true
+					}
+				]
+			}
+		},
 		simplemocha: {
 			options: {
 				globals: [
@@ -31,12 +64,12 @@ module.exports = function (grunt) {
 					'test/unit/*.js'
 				]
 			},
-			integration: {
+			db: {
 				src: [
 					'test/integration/*.js'
 				]
 			},
-			e2e: {
+			api: {
 				src: [
 					'test/endtoend/*.js'
 				]
@@ -53,15 +86,22 @@ module.exports = function (grunt) {
 	});
 	grunt.loadNpmTasks('grunt-simple-mocha');
 	grunt.loadNpmTasks('grunt-express-server');
+	grunt.loadNpmTasks('grunt-mongoimport');
 	grunt.loadNpmTasks('grunt-run');
 	grunt.loadNpmTasks('grunt-env');
 	var test = [
 		'env:test',
 		'simplemocha:unit',
-		'run:sampledata',
-		'simplemocha:integration',
+		//'run:sampledata',
+		'mongoimport',
+		'simplemocha:db',
 		'express:test',
-		'simplemocha:e2e'
+		'simplemocha:api'
 	];
 	grunt.registerTask('test', test);
+	var dbtest = [
+		'mongoimport',
+		'simplemocha:db'
+	];
+	grunt.registerTask('test:db', dbtest);
 };

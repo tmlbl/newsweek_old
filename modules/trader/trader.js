@@ -1,6 +1,8 @@
-var s = require('node-schedule'),
-		request = require('request'),
-		cfg = require('../../config');
+var s = require('node-schedule');
+
+function execute (tradeGroup) {
+	return tradeGroup;
+}
 
 // Schedules execution of a tradeGroup
 function register (tradeGroup) {
@@ -11,11 +13,3 @@ function register (tradeGroup) {
 	});
 }
 module.exports.register = register;
-
-function execute (tradeGroup) {
-	return true;
-}
-
-function createTrade (options) {
-	
-}

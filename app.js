@@ -1,7 +1,6 @@
 var express = require('express'),
 		winston = require('winston'),
 		bodyParser = require('body-parser'),
-		mongoose = require('mongoose'),
 		session = require('express-session'),
 		cookieParser = require('cookie-parser'),
 		app = express();
@@ -23,5 +22,5 @@ require('./api/trade_routes')(app);
 
 var port = process.env.PORT || 8080;
 app.listen(port, function () {
-	console.log('Server started on port', port);
+	winston.info('Server started on port', port);
 });

@@ -6,7 +6,9 @@ module.exports = function (app) {
 		if (req.session.user) {
 			res.cookie('token', req.session.user.token, {});
 			res.sendfile('./views/main.html', {}, function (err) {
-				if (err) throw err;
+				if (err) {
+					throw err;
+				}
 			});
 		} else {
 			res.redirect('/login');
@@ -15,7 +17,9 @@ module.exports = function (app) {
 
 	app.get('/login', function (req, res) {
 		res.sendfile('./views/login.html', {}, function (err) {
-			if (err) throw err;
+			if (err) {
+				throw err;
+			}
 		});
 	});
 
@@ -39,4 +43,4 @@ module.exports = function (app) {
 		});
 	});
 
-}
+};

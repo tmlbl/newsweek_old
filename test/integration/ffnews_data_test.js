@@ -3,12 +3,7 @@ var chai = require('chai'),
 		expect = chai.expect,
 		fs = require('fs'),
 		path = require('path'),
-		db = require('../../db/db'),
 		news = require('../../modules/ffnews/ffnews');
-
-function cleanUp (cb) {
-	
-}
 
 describe('Live data set', function () {
 	var data;

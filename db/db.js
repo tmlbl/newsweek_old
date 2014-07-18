@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var db = {};
 
-var dbUrl = process.env.MONGODB_URL || 'mongodb://localhost/forex_test';
+var dbUrl = 'mongodb://localhost/forex_test';
 
 mongoose.connect(dbUrl, function (err) {
 	if (!err) {
@@ -19,7 +19,7 @@ db.TradeGroup = require('./models/tradeGroup');
 db.User = require('./models/user');
 
 // Synchronizes news events into the db
-db.insert = function (events, cb) {
+db.syncEvents = function (events, cb) {
 	events.forEach(function (ev) {
 		db.NewsEvent.find({
 			title: ev.title,
