@@ -3,25 +3,56 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Newsweek | Login</title>
-	<link rel="stylesheet" href="static/lib/flatly.css">
+	<link rel="stylesheet" href="static/inspinia/css/bootstrap.min.css">
+	<link rel="stylesheet" href="static/inspinia/css/style.css">
 </head>
 <body>
+<div class="wrapper wrapper-content">
 	<div class="row">
-		<div class="col-md-4"></div>
-		<div class="col-md-4">
-			<form method="POST" action="/login" class="form-horizontal">
-			<div class="form-group">
-				<label for="user">Username</label>
-				<input id="user" type="text" name="username" class="form-control">
+		<div class="col-md-8 col-md-offset-2">
+			<div class="ibox">
+				<div class="ibox-title">
+					<h2>Newsweek helps you trade against the week's forex news.</h2>
+				</div>
+				<div class="ibox-content border-bottom">
+					<div class="row">
+						<!-- Sign in form -->
+						<div class="col-sm-6 b-r">
+							<form method="POST" action="/login" class="form">
+								<div class="form-group">
+									<label for="user">Username</label>
+									<input id="user" type="text" name="username" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="pass">Password</label>
+									<input id="pass" type="password" name="password" class="form-control">
+								</div>
+								<button type="submit" class="btn btn-default">Sign In</button>
+							</form>	
+						</div>
+						<!-- Sign up form -->
+						<div class="col-sm-6">
+							<form method="POST" action="/users/new" class="form">
+								<div class="form-group">
+									<label for="user">Username</label>
+									<input id="user" type="text" name="username" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="pass">Password</label>
+									<input id="pass" type="password" name="password" class="form-control">
+								</div>
+								<div class="form-group">
+									<label for="apiToken">Oanda API Token</label>
+									<input id="token" type="text" name="token" class="form-control">
+								</div>
+								<button type="submit" class="btn btn-default">Sign Up</button>
+							</form>	
+						</div>
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
-				<label for="pass">Password</label>
-				<input id="pass" type="password" name="password" class="form-control">
-			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
-		</form>
 		</div>
-		<div class="col-md-4"></div>
 	</div>
+</div>
 </body>
 </html>

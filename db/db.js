@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
 
 var db = {};
 
-var dbUrl = 'mongodb://localhost/forex_test';
+var dbUrl = 'mongodb://localhost:27017/forex';
 
 mongoose.connect(dbUrl, function (err) {
 	if (!err) {
@@ -14,7 +14,7 @@ mongoose.connect(dbUrl, function (err) {
 });
 
 db.NewsEvent = require('./models/news');
-db.Trade = require('./models/trade');
+db.Order = require('./models/order');
 db.TradeGroup = require('./models/tradeGroup');
 db.User = require('./models/user');
 

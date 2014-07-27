@@ -14,7 +14,10 @@
         "newsweek",
         "_",
         "d3",
-        "angular"
+        "angular",
+        "it",
+        "beforeEach",
+        "describe"
     ],
  
  

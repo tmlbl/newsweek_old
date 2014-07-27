@@ -5,7 +5,13 @@ var express = require('express'),
 		cookieParser = require('cookie-parser'),
 		app = express();
 
+require('./db/dev_test_data')();
+
 app.use('/static', express.static(__dirname + '/static'));
+app.use(function (req, res, next) {
+	console.log(req.method + ' ' + req.url);
+	next();
+});
 app.use(bodyParser());
 app.use(cookieParser());
 app.use(session({

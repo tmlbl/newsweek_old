@@ -25,15 +25,13 @@ module.exports = function (app) {
   });
   // POST /api/trades -- Creates a trade
   app.post('/api/trades', function (req, res) {
-  	var trade = new db.TradeGroup(req.body);
-  	trade.save(function (err) {
-  		if (err) {
-  			res.send(500, err);
-  		} else {
-        trader.register(trade);
-  			res.send(200);
-  		}
-  	});
+    trader.new(req.body, function (err, tradeGroup) {
+      if (err) {
+        console.error(err);
+        return res.send(500);
+      }
+      return res.send(200);
+    });
   });
   // REST routes
   app.get('/api/trades/:id', function (req, res) {

@@ -3,41 +3,40 @@
 <head lang="en">
 	<meta charset="UTF-8">
 	<title>Newsweek</title>
-	<link rel="stylesheet" href="static/lib/flatly.css">
-	<link rel="stylesheet" href="static/skin.css">
+
+	<link rel="stylesheet" href="static/inspinia/css/bootstrap.min.css">
+	<link rel="stylesheet" href="static/inspinia/css/style.css">
 </head>
 <body>
 
 <!-- Navbar -->
-<div class="navbar navbar-default navbar-fixed-top">
-	<a href="/" class="navbar-brand">Newsweek</a>
-	<div class="btn-group pull-right navbar-form" dropdown>
-		<button type="button" class="btn btn-primary dropdown-toggle">
-			View  <span class="caret"></span>
-		</button>
-		<ul class="dropdown-menu" role="menu">
-			<li><a href="/#/events">Events</a></li>
-			<li><a href="/#/positions">Positions</a></li>
-			<li><a href="/#/charts">Charts</a></li>
-		</ul>
+<nav class="navbar navbar-static-top gray-bg">
+	<div class="navbar-header">
+		<h1 class="navbar-brand">
+			<a href="/" target="_self">
+				Newsweek
+			</a>
+		</h1>
 	</div>
-</div>
+</nav>
 
 <!-- View Body -->
-<div class="container-fluid">
+<div class="container">
 	<div ng-view></div>
 </div>
 
-<!-- Sources -->
+<!-- Angular and Modules -->
 <script src="static/lib/angular/angular.js"></script>
 <script src="static/lib/angular-route/angular-route.js"></script>
 <script src="static/lib/angular-bootstrap/ui-bootstrap.js"></script>
 <script src="static/lib/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-<script src="static/lib/d3/d3.js"></script>
-<script src="static/lib/lodash/dist/lodash.js"></script>
+
+<!-- Angular App Init -->
 <script src="static/ng/app.js"></script>
 <script src="static/ng/dir/chart.js"></script>
 <script src="static/ng/fltr/symbol-fltr.js"></script>
+
+<!-- Controllers -->
 <script src="static/ng/ctrl/event-ctrl.js"></script>
 <script src="static/ng/ctrl/new-trade-ctrl.js"></script>
 <script src="static/ng/ctrl/edit-trade-ctrl.js"></script>

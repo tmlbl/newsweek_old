@@ -1,11 +1,12 @@
-var db = require('../../db/db');
+var db = require('../../db/db'),
+		path = require('path');
 
 module.exports = function (app) {
 
 	app.get('/', function (req, res) {
 		if (req.session.user) {
 			res.cookie('token', req.session.user.token, {});
-			res.sendfile('./views/main.html', {}, function (err) {
+			res.sendfile('/home/views/main.html', {}, function (err) {
 				if (err) {
 					throw err;
 				}
@@ -16,7 +17,7 @@ module.exports = function (app) {
 	});
 
 	app.get('/login', function (req, res) {
-		res.sendfile('./views/login.html', {}, function (err) {
+		res.sendfile(path.resolve('home/views/login.html'), {}, function (err) {
 			if (err) {
 				throw err;
 			}
@@ -29,11 +30,34 @@ module.exports = function (app) {
 			password: req.body.password
 		}, function (err, user) {
 			if (err) {
-				res.send('There was an error fetching your account.');
+				return res.send(500, err);
 			} else {
 				req.session.user = user;
 				res.redirect('/');
 			}
+		});
+	});
+
+	app.post('/users/new', function (req, res) {
+		if (!req.body.username) {
+			res.send(500, 'Must supply a username');
+		}
+		if (!req.body.password) {
+			res.send(500, 'Must supply a password');
+		}
+		if (!req.body.token) {
+			res.send(500, 'Must supply an Oanda API token');
+		}
+		var user = new db.User(req.body);
+		user.save(function (err, user) {
+			if (err) {
+				console.error(err);
+				return res.send(500, 
+						'There was an error creating your account');
+			}
+			console.log('Saved user', user)
+			req.session.user = user;
+			return res.redirect('/');
 		});
 	});
 

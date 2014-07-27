@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
 		ObjectId = mongoose.Schema.ObjectId;
 
-var TradeSchema = new mongoose.Schema({
+var OrderSchema = new mongoose.Schema({
 	'user'         : { type: ObjectId, ref: 'User' },
 	'tradeGroup'   : { type: ObjectId, ref: 'TradeGroup' },
 	'time'         : { type: Date, required: true, index: true },
@@ -18,4 +18,4 @@ var TradeSchema = new mongoose.Schema({
 	'trailingStop' : { type: Number }
 });
 
-module.exports = mongoose.model('Trade', TradeSchema);
+module.exports = mongoose.model('Order', OrderSchema);
