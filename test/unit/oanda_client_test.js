@@ -2,9 +2,11 @@ var chai = require('chai'),
 		OandaClient = require('../../modules/oanda/client.js'),
 		config = require('../../config.js');
 
-describe.only('Oanda Client Class', function () {
+describe.only('Oanda API Client', function () {
 	var client,
-			acctId;
+			acctId,
+			orderId;
+
 	beforeEach(function () {
 		client = new OandaClient(config.apiKey, acctId);
 	});
@@ -55,24 +57,46 @@ describe.only('Oanda Client Class', function () {
 		});
 	});
 
-	it('should create an order', function (done) {
-		client.openOrder({
+	it('should create a trade', function (done) {
+		client.openTrade({
+			type: 'market',
 			instrument: 'EUR_USD',
-			units: 0.01,
 			side: 'sell',
-			price: 200,
-			type: 'limit',
-			takeProfit: 300,
-			upperBound: 0,
-			lowerBound: 0,
-			trailingStop: 10
+			units: 2
 		}, function (err, res) {
-			console.log(res);
 			if (err) {
 				throw err;
 			}
-			if (res.code !== 1) {
-				throw new Error('Got non-success status code ' + res.code);
+			if (res.code === 24) {
+				console.log('Trading is halted');
+			} else if (!res.tradeOpened) {
+				throw new Error('Failed to open a trade');
+			} else {
+				orderId = res.tradeOpened.id;
+			}
+			done();
+		});
+	});
+
+	it('should get information on that trade', function (done) {
+		client.getTradeInfo(orderId, function (err, res) {
+			if (err) {
+				throw err;
+			}
+			if (res.code) {
+				throw new Error('Got error code ' + res.code);
+			}
+			done();
+		});
+	});
+
+	it('should delete that trade', function (done) {
+		client.closeTrade(orderId, function (err, res) {
+			if (err) {
+				throw err;
+			}
+			if (res.code) {
+				throw new Error('Got error code ' + res.code);
 			}
 			done();
 		});

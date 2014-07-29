@@ -14,8 +14,10 @@ OandaClient.prototype._request = function (url, method, body, cb) {
 	var options = {
 		url: url,
 		method: method,
+		form: body,
 		headers: {
-			'Authorization': 'Bearer ' + this.apiToken
+			'Authorization': 'Bearer ' + this.apiToken,
+			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	};
 	request(options, function (err, res) {
@@ -29,11 +31,7 @@ OandaClient.prototype._get = function (url, cb) {
 };
 
 OandaClient.prototype._post = function (endpoint, body, cb) {
-	var uri = url.parse(endpoint);
-	uri.query = body;
-	var fmturl = url.format(uri);
-	console.log(fmturl);
-	this._request(fmturl, 'POST', {}, cb);
+	this._request(endpoint, 'POST', body, cb);
 };
 
 OandaClient.prototype._delete = function (url, cb) {
@@ -60,12 +58,17 @@ OandaClient.prototype.getPositions = function (cb) {
 	this._get(this.endpoint + '/v1/accounts/' + this.accountId + '/positions', cb);
 };
 
-OandaClient.prototype.openOrder = function(order, cb) {
+OandaClient.prototype.openTrade = function(order, cb) {
 	this._post(this.endpoint + '/v1/accounts/' + this.accountId +
 		'/orders', order, cb);
 };
 
-OandaClient.prototype.closeOrder = function(orderId, cb) {
-	this._delete(this.endpoint + '/v1/accounts' + this.accountId +
-		'/orders/' + orderId, cb);
+OandaClient.prototype.getTradeInfo = function(orderId, cb) {
+	this._get(this.endpoint + '/v1/accounts/' + this.accountId +
+		'/trades/' + orderId, cb);
+};
+
+OandaClient.prototype.closeTrade = function(orderId, cb) {
+	this._delete(this.endpoint + '/v1/accounts/' + this.accountId +
+		'/trades/' + orderId, cb);
 };

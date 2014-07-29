@@ -1,1 +1,22 @@
-positions.html
+<div class="row">
+	<div class="col-md-8">
+		<div class="ibox float-e-margins">
+			<div class="ibox-title">
+				<h1>All Assets</h1>
+				<div class="ibox-content">
+					<h1 class="no-margins">{{ position.price }}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4" ng-repeat="position in positions">	
+		<div class="ibox">
+			<div class="ibox-title">
+				<h5>{{ position.symbol }}</h5>
+				<div class="ibox-content">
+					<h1 class="no-margins">{{ position.price }}</h1>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

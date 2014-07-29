@@ -8,5 +8,5 @@ EXPOSE 8080
 RUN chmod 777 /home/boot.sh
 ENTRYPOINT /home/boot.sh
 
-CMD forever app.js
+CMD forever -w app.js
 

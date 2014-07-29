@@ -1,4 +1,5 @@
 var db = require('../../db/db'),
+		config = require('../../config.js'),
 		path = require('path');
 
 module.exports = function (app) {
@@ -6,7 +7,8 @@ module.exports = function (app) {
 	app.get('/', function (req, res) {
 		if (req.session.user) {
 			res.cookie('token', req.session.user.token, {});
-			res.sendfile('/home/views/main.html', {}, function (err) {
+			res.cookie('host', config.apiHost, {});
+			res.sendfile('views/main.html', {}, function (err) {
 				if (err) {
 					throw err;
 				}
@@ -17,7 +19,7 @@ module.exports = function (app) {
 	});
 
 	app.get('/login', function (req, res) {
-		res.sendfile(path.resolve('home/views/login.html'), {}, function (err) {
+		res.sendfile(path.resolve('views/login.html'), {}, function (err) {
 			if (err) {
 				throw err;
 			}

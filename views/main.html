@@ -10,26 +10,22 @@
 <body>
 
 <!-- Navbar -->
-<nav class="navbar navbar-static-top gray-bg">
-	<div class="navbar-header">
-		<h1 class="navbar-brand">
-			<a href="/" target="_self">
-				Newsweek
-			</a>
-		</h1>
+<div class="container">
+	<div class="row  border-bottom white-bg dashboard-header">
+		<h2>Newsweek</h2>
+		<ol class="breadcrumb pull-right">
+  		<li><a href="#/events">Events</a></li>
+  		<li><a href="#/positions">Positions</a></li>
+  		<li class="active"><a href="/logout" target="_self">Logout</a></li>
+		</ol>
 	</div>
-	<ul class="nav navbar-top-links navbar-right">
-		<li>
-			<a href="/logout" target="_self">
-				Sign Out
-			</a>
-		</li>
-	</ul>
-</nav>
+</div>
 
 <!-- View Body -->
 <div class="container">
-	<div ng-view></div>
+	<div class="wrapper wrapper-content">
+		<div ng-view></div>
+	</div>
 </div>
 
 <!-- Angular and Modules -->
