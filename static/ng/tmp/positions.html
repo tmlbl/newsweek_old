@@ -3,8 +3,9 @@
 		<div class="ibox float-e-margins">
 			<div class="ibox-title">
 				<h1>All Assets</h1>
-				<div class="ibox-content">
-					<h1 class="no-margins">{{ position.price }}</h1>
+				<div class="ibox-content" ng-repeat="a in accounts">
+					<h1 class="no-margins">Name: {{ a.accountName }}</h1>
+					<h2>ID: {{ a.accountId }}</h2>
 				</div>
 			</div>
 		</div>
@@ -13,6 +14,9 @@
 		<div class="ibox">
 			<div class="ibox-title">
 				<h5>{{ position.symbol }}</h5>
+				<span class="pull-right label label-primary">
+					UP
+				</span>
 				<div class="ibox-content">
 					<h1 class="no-margins">{{ position.price }}</h1>
 				</div>

@@ -7,7 +7,7 @@ module.exports = OandaClient;
 function OandaClient(apiToken, accountId) {
 	this.apiToken = apiToken;
 	this.accountId = accountId;
-	this.endpoint = config.apiHost;
+	this.endpoint = 'https://' + config.apiHost;
 }
 
 OandaClient.prototype._request = function (url, method, body, cb) {

@@ -2,7 +2,7 @@ var chai = require('chai'),
 		OandaClient = require('../../modules/oanda/client.js'),
 		config = require('../../config.js');
 
-describe.only('Oanda API Client', function () {
+describe('Oanda API Client', function () {
 	var client,
 			acctId,
 			orderId;

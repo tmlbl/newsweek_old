@@ -25,22 +25,6 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
 	}
 	curTime();
 
-	// Gets a live instrument price for next event
-	function livePrice () {
-		$timeout(livePrice, 5000);
-		if ($scope.nextEvent) {
-			var url = 'http://api-sandbox.oanda.com/v1/prices?instruments=';
-			if ($scope.nextTrade) {
-				url += $scope.nextTrade.instrument;
-			}
-			$http({ method: 'GET', url: url })
-				.success(function (data) {
-					$scope.livePrice = data.prices[0].bid;
-				});
-		}
-	}
-	livePrice();
-
 	// Opens the new trade modal
 	$scope.newTrade = function (ev) {
 		$modal.open({

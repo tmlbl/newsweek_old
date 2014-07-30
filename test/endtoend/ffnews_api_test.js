@@ -31,7 +31,6 @@ describe.only('Forex News API', function () {
 		superagent.post('http://127.0.0.1:8080/api/events/' + obj._id)
 			.send({ trading: true })
 			.end(function (err, res) {
-				console.log(doc);
 				expect(err).to.equal(null);
 				db.NewsEvent.findById(obj._id, function (err, doc) {
 					expect(err).to.equal(null);

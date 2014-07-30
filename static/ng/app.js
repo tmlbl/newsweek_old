@@ -15,7 +15,11 @@ newsweek.config(['$routeProvider',
 				templateUrl: 'static/ng/tmp/charts.html',
 				controller: 'chartCtrl'
 			})
+			.when('/accounts', {
+				templateUrl: 'static/ng/tmp/accounts.html',
+				controller: 'accountCtrl'
+			})
 			.otherwise({
-				redirectTo: '/events'
+      	redirectTo: '/events'
 			});
 	}]);
