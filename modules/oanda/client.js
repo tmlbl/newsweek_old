@@ -20,6 +20,7 @@ OandaClient.prototype._request = function (url, method, body, cb) {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	};
+	logger.info('Oanda req', options.headers.Authorization);
 	request(options, function (err, res) {
 		if (err) return cb(err);
 		cb(null, JSON.parse(res.body));

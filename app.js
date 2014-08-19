@@ -4,19 +4,22 @@ var express = require('express'),
 		cookieParser = require('cookie-parser'),
 		app = express();
 
-require('./db/dev_test_data')();
-
 require('./common/logger');
+
+require('./db/dev_test_data')();
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(function (req, res, next) {
-	console.log(req.method + ' ' + req.url);
+	logger.debug(req.method, req.url);
 	next();
 });
-app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(session({
-	secret: 'daggeurotype'
+	secret: 'daggeurotype',
+  resave: true,
+  saveUninitialized: true
 }));
 
 require('./modules/auth/auth_routes')(app);

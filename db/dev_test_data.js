@@ -12,15 +12,15 @@ var store = {
 
 function genTestData() {
 	if (process.env.NODE_ENV !== 'dev') {
-		console.log('Env is not dev, skipping test data');
+		logger.debug('Env is not dev, skipping test data');
 		return;
 	}
-	console.log('Generating test data');
+	logger.debug('Generating test data');
 	async.series([
 		createTestUser,
 		getEventData
 	], function (err, results) {
-		console.log('Finished generating test data');
+		logger.debug('Finished generating test data');
 	});
 }
 
@@ -28,10 +28,10 @@ function createTestUser(next) {
 	// Check if the test user already exists
 	db.User.findOne({ username: 'tim', password: 'root' }, function (err, user) {
 		if (user) {
-			console.log('Test user already exists');
+			logger.debug('Test user already exists');
 			return next();
 		}
-		console.log('Generating test user');
+		logger.debug('Generating test user');
 		// Create the test user
 		var testUser = new db.User({
 			username: 'tim',
@@ -42,7 +42,7 @@ function createTestUser(next) {
 			if (err) {
 				throw err;
 			}
-			console.log('Created test user', user);
+			logger.debug('Created test user', user.toObject());
 			store.user = user;
 			next();
 		});
@@ -55,15 +55,15 @@ function getEventData(next) {
 		events = news.cleanJSON(events);
 		events = news.formatDates(events);
 		if (err) {
-			console.log(err);
+			logger.error(err);
 			return;
 		}
 		db.syncEvents(events, function (err) {
 			if (err) {
-				console.log(err);
+				logger.debug(err);
 				return;
 			}
-			console.log('Synced news events');
+			logger.debug('Synced news events');
 			next();
 		});
 	});

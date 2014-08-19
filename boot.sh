@@ -1,4 +1,4 @@
-touch .foreverignore
-echo winston.log > .foreverignore
-cat .foreverignore
+npm i
+bower i --allow-root
 supervisor /home/app.js
+

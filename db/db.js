@@ -7,7 +7,7 @@ var dbUrl = 'mongodb://localhost:27017/forex';
 
 mongoose.connect(dbUrl, function (err) {
 	if (!err) {
-		winston.info('Connected to MongoDB');
+		logger.debug('Connected to MongoDB');
 	} else {
 		throw err;
 	}

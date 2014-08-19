@@ -3,14 +3,20 @@ var db = require('../db/db'),
 		OandaClient = require('../modules/oanda/client');
 
 module.exports = function (app) {
-  app.get('/positions', function (req, res) {
+  app.get('/fx/accounts/:id/positions', function (req, res) {
   	console.log('Request by user', req.session.user);
-  	var oa = new OandaClient(req.session.token);
-
-  	res.send(200);
+  	var oa = new OandaClient(req.session.user.token, req.params.id);
+    oa.getPositions(function (err, positions) {
+      logger.info(positions);
+      if (err) {
+        logger.error(util.inspect(err));
+        return res.status(500).send();
+      }
+      return res.status(200).send(positions);
+    });
   });
 
-  app.get('/accounts', function (req, res) {
+  app.get('/fx/accounts', function (req, res) {
 		var oa = new OandaClient(req.session.user.token);
 		oa.getAccounts(function (err, accounts) {
 			logger.info(accounts);
@@ -19,10 +25,10 @@ module.exports = function (app) {
 				return res.send(500);
 			}
 			return res.send(200, accounts);
-		});  	
+		});
   });
 
-  app.get('/accounts/:id', function (req, res) {
+  app.get('/fx/accounts/:id', function (req, res) {
   	var oa = new OandaClient(req.session.user.token, req.params.id)
   	oa.getAccountInfo(function (err, info) {
   		if (err) {
