@@ -18,12 +18,14 @@ module.exports = function (app) {
 
   // GET /api/trades -- All trades for user
   app.get('/api/trades', function (req, res) {
-  	db.TradeGroup.find({}, function (err, docs) {
-  		if (err) {
-        return res.status(500).send(err);
-      }
-  		return res.status(200).send(docs);
-  	});
+    db.TradeGroup.find({})
+      .populate('event')
+      .exec(function (err, docs) {
+        if (err) {
+          return res.status(500).send(err);
+        }
+         return res.status(200).send(docs);
+      });
   });
 
   // POST /api/trades -- Creates a trade

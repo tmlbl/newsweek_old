@@ -1,5 +1,6 @@
-function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
+function newTradeCtrl ($scope, $modalInstance, event, trades, $http, $log) {
 	$scope.event = event;
+	$scope.error = 'ERROR';
 	$scope.trade = {
 		time: event.time,
 		event: event._id,
@@ -19,11 +20,11 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 					title: event.title
 				};
 				trades.push($scope.trade);
-				$http.put('/api/events/' + event._id, { trading: true })
-					.success(function (data) {
-						event.trading = true;
-						$modalInstance.close();
-					});
+				$modalInstance.close();
+			})
+			.error(function (err) {
+				$scope.error = err;
+				$log.error('Error posting the trade: ', err);
 			});
 	};
 	$scope.cancel = function () {
@@ -32,4 +33,4 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http) {
 }
 
 newsweek.controller('newTradeCtrl',
-	['$scope', '$modalInstance', 'event', 'trades', '$http', newTradeCtrl]);
+	['$scope', '$modalInstance', 'event', 'trades', '$http', '$log', newTradeCtrl]);
