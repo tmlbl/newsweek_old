@@ -5,7 +5,8 @@ var chai = require('chai'),
 describe('Oanda API Client', function () {
 	var client,
 			acctId,
-			orderId;
+			orderId,
+      trading;
 
 	beforeEach(function () {
 		client = new OandaClient(config.apiKey, acctId);
@@ -64,21 +65,23 @@ describe('Oanda API Client', function () {
 			side: 'sell',
 			units: 2
 		}, function (err, res) {
-			if (err) {
-				throw err;
-			}
-			if (res.code === 24) {
+			if (err.code === 24) {
 				console.log('Trading is halted');
-			} else if (!res.tradeOpened) {
-				throw new Error('Failed to open a trade');
-			} else {
-				orderId = res.tradeOpened.id;
-			}
+        trading = false;
+			} else if (err) {
+        throw err;
+      } else {
+        orderId = res.tradeOpened.id;
+        trading = true;
+      }
 			done();
 		});
 	});
 
 	it('should get information on that trade', function (done) {
+    if (!trading) {
+      return done();
+    }
 		client.getTradeInfo(orderId, function (err, res) {
 			if (err) {
 				throw err;
@@ -91,6 +94,9 @@ describe('Oanda API Client', function () {
 	});
 
 	it('should delete that trade', function (done) {
+    if (!trading) {
+      return done();
+    }
 		client.closeTrade(orderId, function (err, res) {
 			if (err) {
 				throw err;

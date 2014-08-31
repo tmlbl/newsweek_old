@@ -1,6 +1,6 @@
 'use strict';
 var db = require('../db/db'),
-    trader = require('../modules/trader/trader');
+    Trader = require('../modules/trader/trader');
 
 module.exports = function (app) {
 
@@ -30,7 +30,7 @@ module.exports = function (app) {
 
   // POST /api/trades -- Creates a trade
   app.post('/api/trades', function (req, res) {
-    trader.new(req.body, function (err, tradeGroup) {
+    new Trader(req.body, function (err, tradeGroup) {
       if (err) {
         console.error(err);
         return res.status(500).send(err);

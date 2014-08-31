@@ -22,8 +22,12 @@ OandaClient.prototype._request = function (url, method, body, cb) {
 	};
 	logger.info('Oanda req', options.headers.Authorization);
 	request(options, function (err, res) {
+    var data = JSON.parse(res.body);
+    if (data.code) {
+      err = data;
+    }
 		if (err) return cb(err);
-		cb(null, JSON.parse(res.body));
+		cb(null, data);
 	});
 };
 
