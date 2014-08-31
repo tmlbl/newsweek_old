@@ -30,7 +30,11 @@ module.exports = function (app) {
 
   // POST /api/trades -- Creates a trade
   app.post('/api/trades', function (req, res) {
-    new Trader(req.body, function (err, tradeGroup) {
+    var options = {
+      token: req.session.user.token,
+      account: req.body.account
+    };
+    new Trader(options, req.body, function (err, tradeGroup) {
       if (err) {
         console.error(err);
         return res.status(500).send(err);

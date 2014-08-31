@@ -1,4 +1,4 @@
-var newsweek = angular.module('newsweek', ['ngRoute', 'ui.bootstrap']);
+var newsweek = angular.module('newsweek', ['ngRoute', 'ui.bootstrap', 'angularMoment']);
 
 newsweek.config(['$routeProvider',
 	function ($routeProvider) {

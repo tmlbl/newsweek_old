@@ -53,6 +53,7 @@ describe('Oanda API Client', function () {
 			if (!res.hasOwnProperty('positions')) {
 				throw new Error('Didn\'t get positions');
 			}
+      console.dir(res.positions);
 			done();
 		});
 	});
@@ -64,7 +65,7 @@ describe('Oanda API Client', function () {
 			side: 'sell',
 			units: 2
 		}, function (err, res) {
-			if (err.code === 24) {
+			if (err && err.code === 24) {
 				console.log('Trading is halted');
         trading = false;
 			} else if (err) {

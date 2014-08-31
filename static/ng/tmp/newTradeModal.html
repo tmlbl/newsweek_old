@@ -7,24 +7,32 @@
 	<form role="form">
 		<div class="container-fluid">
 			<div class="col-md-12">
+        <div class="form-group">
+          <label for="account">Use Account:</label>
+          <select id="account" name="account" class="form-control" ng-model="trade.account">
+            <option ng-repeat="account in accounts">{{ account.accountId }}</option>
+          </select>
+        </div>
 				<div class="form-group">
 					<label for="instrument">Instrument:</label>
-					<select name="instrument" class="form-control" ng-model="trade.instrument">
-						<option ng-repeat="sym in symbols | filter:event.country" value="{{sym}}">{{sym}}</option>
+					<select id="instrument" name="instrument" class="form-control" ng-model="trade.instrument">
+						<option ng-repeat="sym in symbols | filter:event.country">{{ sym }}</option>
 					</select>
 				</div>
 				<div class="form-group">
 					<label for="units">Units:</label>
-					<input type="text" class="form-control" ng-model="trade.units"/>
+					<input id="units" type="text" class="form-control" ng-model="trade.units"/>
 				</div>
 			</div>
+      <div class="col-md-12">
+        <pre>
+          {{trade}}
+        </pre>
+      </div>
 		</div>
 	</form>
 </div>
 <div class="modal-footer">
-	<alert ng-if="error">
-		w
-	</alert>
 	<button class="btn btn-primary" ng-click="submit()">Submit</button>
 	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

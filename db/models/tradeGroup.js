@@ -7,7 +7,9 @@ var TradeGroupSchema = new mongoose.Schema({
 	'instrument' : { type: String, required: true },
 	'units'      : { type: Number, required: true },
 	'user'       : { type: ObjectId, ref: 'User' },
-	'orders'     : [{ type: ObjectId, ref: 'Order' }]
+  'account'    : { type: Number },
+	'orders'     : [{ type: ObjectId, ref: 'Order' }],
+  'completed'  : { type: Boolean, default: false }
 });
 
 module.exports = mongoose.model('TradeGroup', TradeGroupSchema);

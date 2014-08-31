@@ -4,19 +4,19 @@
 			<div class="row">
 				<h3>Current Time:</h3>
 				<h1 class="clock">
-					{{ curTime | date : 'M/dd HH:mm:ss' }}
+					{{ curTime | date : 'MMMM dd h:mm:ss a' }}
 				</h1>
 			</div>
 		</div>
-		<h3>Next Trade: <small>{{ nextTrade.event.title }}</small></h3>
+		<h3>Next Trade <span am-time-ago="nextTrade.time"></span></h3>
 		<table class="table">
 			<tr>
 				<td>Symbol: {{ nextTrade.instrument | symbol }}</td>
 				<td>Units: {{ nextTrade.units }}</td>
 			</tr>
 			<tr>
-				<td>Price: {{ livePrice }}</td>
-				<td>Time: {{ nextTrade.time | date : 'M/dd HH:mm' }}</td>
+				<td>Time: {{ nextTrade.time | amDateFormat: 'M/D h:mm a' }}</td>
+				<td>Event: {{ nextTrade.event.title }}</td>
 			</tr>
 		</table>
 		<h1>Trades</h1>
@@ -34,7 +34,9 @@
 				<tr ng-repeat="trade in trades | orderBy:'time'">
 					<td>{{ trade.event.title }}</td>
 					<td>{{ trade.instrument | symbol }}</td>
-					<td>{{ trade.time | date : 'M/dd HH:mm' }}</td>
+					<td>
+            <span am-time-ago="trade.time"></span>
+					</td>
 					<td>{{ trade.units }}</td>
 					<td>
 						<button class="btn btn-default" ng-click="editTrade(trade)">
@@ -72,7 +74,7 @@
 					<th>Symbol</th>
 					<th>Impact</th>
 					<th>Time</th>
-					<th>Trading</th>
+					<th>Trade</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -80,13 +82,12 @@
 					<td>{{ n.title }}</td>
 					<td>{{ n.country }}</td>
 					<td style="color:{{ n.color }}">{{ n.impact }}</td>
-					<td>{{ n.time | date : 'M/dd HH:mm' }}</td>
 					<td>
-						<button class="btn btn-default" ng-click="newTrade(n)" ng-if="!n.trading">
-							No
-						</button>
-						<button class="btn btn-success" ng-click="newTrade(n)" ng-if="n.trading">
-							Yes
+            <span am-time-ago="n.time"></span>
+					</td>
+					<td>
+						<button class="btn btn-default" ng-click="newTrade(n)">
+							New
 						</button>
 					</td>
 				</tr>

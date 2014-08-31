@@ -1,20 +1,27 @@
 <div class="row">
-	<div ng-if="positions.length < 1">
+	<div ng-if="positions.length < 1 && !loading">
 		<div class="ibox">
 			<div class="ibox-title">
 				<h3>No open positions!</h3>
 			</div>
 		</div>
 	</div>
+  <div ng-if="loading">
+    <div class="ibox">
+      <div class="ibox-title">
+        <h3>Loading positions...</h3>
+      </div>
+    </div>
+  </div>
 	<div class="col-md-4" ng-repeat="position in positions">
 		<div class="ibox">
 			<div class="ibox-title">
-				<h5>{{ position }}</h5>
-				<span class="pull-right label label-primary">
-					UP
-				</span>
+				<h3>
+          {{ position.side }}: {{ position.instrument }},
+          {{ position.units }} units
+        </h3>
 				<div class="ibox-content">
-					<h1 class="no-margins">{{ position.price }}</h1>
+					<h1 class="no-margins">{{ position.avgPrice }}</h1>
 				</div>
 			</div>
 		</div>

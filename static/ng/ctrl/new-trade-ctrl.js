@@ -1,17 +1,13 @@
-function newTradeCtrl ($scope, $modalInstance, event, trades, $http, $log) {
+function newTradeCtrl ($scope, $modalInstance, event, trades,
+                       $http, $log, symbols) {
 	$scope.event = event;
-	$scope.error = 'ERROR';
+
 	$scope.trade = {
 		event: event._id,
 		instrument: '',
 		units: 0
 	};
-	$scope.symbols = [
-		'EUR_USD', 'EUR_JPY', 'EUR_CHF', 'EUR_GBP',
-		'EUR_AUD', 'USD_JPY', 'USD_CAD', 'USD_CHF',
-		'GBP_CHF', 'GBP_JPY', 'GBP_USD', 'AUD_USD',
-		'AUD_JPY', 'NZD_USD'
-	];
+	$scope.symbols = symbols;
 	$scope.submit = function () {
 		$http.post('/api/trades', $scope.trade)
 			.success(function (data) {
@@ -32,4 +28,5 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http, $log) {
 }
 
 newsweek.controller('newTradeCtrl',
-	['$scope', '$modalInstance', 'event', 'trades', '$http', '$log', newTradeCtrl]);
+	['$scope', '$modalInstance', 'event', 'trades', '$http',
+    '$log', 'symbols', newTradeCtrl]);

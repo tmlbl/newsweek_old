@@ -12,8 +12,7 @@ describe('Trader class', function () {
     country: 'GBP',
     time: Date.now() + 120000,
     impact: 'Medium',
-    _id: mongoose.Types.ObjectId(),
-    trading: false
+    _id: mongoose.Types.ObjectId()
   };
 
   it('must create a test event', function (done) {
@@ -35,6 +34,11 @@ describe('Trader class', function () {
       units: 2,
       instrument: 'EUR_USD',
       event: testevent._id
+    },
+    function (err) {
+      if (err) {
+        throw err;
+      }
     });
     if (!trader.execute) {
       throw new Error('Didn\'t find the class object');
@@ -79,6 +83,11 @@ describe('Trader class', function () {
     if (typeof trader.trade.time !== 'number') {
       throw new Error('Expected trade time to be a number but got ' +
         typeof trader.trade.time);
+    }
+    try {
+      Date.parse(trader.trade.time);
+    } catch (err) {
+      throw err;
     }
   });
 

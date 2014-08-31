@@ -20,10 +20,9 @@ OandaClient.prototype._request = function (url, method, body, cb) {
 			'Content-Type': 'application/x-www-form-urlencoded'
 		}
 	};
-	logger.info('Oanda req', options.headers.Authorization);
 	request(options, function (err, res) {
     var data = JSON.parse(res.body);
-    if (data.code) {
+    if (data && data.code) {
       err = data;
     }
 		if (err) return cb(err);
@@ -46,7 +45,7 @@ OandaClient.prototype._delete = function (url, cb) {
 OandaClient.prototype.getPrices = function (params, cb) {
 	var uri = url.parse(this.endpoint);
 	uri.query = params;
-	uri.pathname = '/v1/prices'
+	uri.pathname = '/v1/prices';
 	var fmturl = url.format(uri);
 	this._get(fmturl, cb);
 };

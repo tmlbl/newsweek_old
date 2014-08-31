@@ -6,8 +6,7 @@ var EventSchema = new mongoose.Schema({
 	'impact'     : { type: String },
 	'country'    : { type: String, required: true },
 	'forecast'   : { type: String },
-	'previous'   : { type: String },
-	'trading'    : { type: Boolean, default: false }
+	'previous'   : { type: String }
 });
 
 module.exports = mongoose.model('NewsEvent', EventSchema);
