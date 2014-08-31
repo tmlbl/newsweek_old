@@ -2,7 +2,6 @@ function newTradeCtrl ($scope, $modalInstance, event, trades, $http, $log) {
 	$scope.event = event;
 	$scope.error = 'ERROR';
 	$scope.trade = {
-		time: event.time,
 		event: event._id,
 		instrument: '',
 		units: 0

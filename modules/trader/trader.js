@@ -7,24 +7,35 @@ var s = require('node-schedule'),
 module.exports = Trader;
 
 function Trader(options, trade) {
-  var self = this;
   this.options = options;
   this.client = new OA(options.token, options.account);
   this.trade = trade;
-  this.model = new db.TradeGroup(this.trade);
-  this.model.save(function (err) {
-    if (err) {
-      logger.error(err);
-    }
-    logger.debug('Created trade group', self.model.id);
-    self.schedule();
-  });
+  this.schedule();
 }
 
 Trader.prototype.schedule = function () {
-  var t = this.trade.time;
-  logger.debug('Scheduling trade', this.model.id, 'at', t);
-  s.scheduleJob(t, this.execute.bind(null, this));
+  var query = {
+    _id: this.trade.event
+  },
+  self = this;
+  db.NewsEvent.findOne(query, function (err, event) {
+    if (err) {
+      logger.error('Error finding event', query);
+    }
+    if (!event) {
+      logger.error('Event not found', query);
+    }
+    self.event = event;
+    self.trade.time = event.time - 120000;
+    self.model = new db.TradeGroup(self.trade);
+    self.model.save(function (err) {
+      if (err) {
+        logger.error(err);
+      }
+      logger.debug('Scheduling trade', self.model.id, 'at', self.trade.time);
+      s.scheduleJob(self.trade.time, self.execute.bind(null, self));
+    });
+  });
 };
 
 Trader.prototype.execute = function (self) {
@@ -33,4 +44,8 @@ Trader.prototype.execute = function (self) {
     logger.debug('Opened', res);
   });
   self.completed = true;
+};
+
+Trader.prototype.tradeId = function () {
+  return this.model._id.toString()
 };

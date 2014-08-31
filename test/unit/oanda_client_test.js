@@ -1,5 +1,4 @@
-var chai = require('chai'),
-		OandaClient = require('../../modules/oanda/client.js'),
+var OandaClient = require('../../modules/oanda/client.js'),
 		config = require('../../config.js');
 
 describe('Oanda API Client', function () {
