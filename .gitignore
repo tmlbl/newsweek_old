@@ -10,4 +10,6 @@ static/lib/angular
 static/lib/lodash
 static/lib/angular-bootstrap
 static/lib/angular-route
-
+static/lib/angular-moment
+static/lib/jquery
+static/lib/moment

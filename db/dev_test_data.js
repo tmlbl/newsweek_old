@@ -19,8 +19,12 @@ function genTestData() {
 	async.series([
 		createTestUser,
 		getEventData
-	], function (err, results) {
-		logger.debug('Finished generating test data');
+	], function (err) {
+    if (err) {
+      logger.debug('Error getting test results!', err);
+    } else {
+      logger.debug('Finished generating test data');
+    }
 	});
 }
 

@@ -1,16 +1,16 @@
 var mongoose = require('mongoose'),
-		winston = require('winston');
+  winston = require('winston');
 
-var db = {};
+function db() {}
 
 var dbUrl = 'mongodb://localhost:27017/forex';
 
 mongoose.connect(dbUrl, function (err) {
-	if (!err) {
-		logger.debug('Connected to MongoDB');
-	} else {
-		throw err;
-	}
+  if (!err) {
+    logger.debug('Connected to MongoDB');
+  } else {
+    throw err;
+  }
 });
 
 db.NewsEvent = require('./models/news');
@@ -20,28 +20,28 @@ db.User = require('./models/user');
 
 // Synchronizes news events into the db
 db.syncEvents = function (events, cb) {
-	events.forEach(function (ev) {
-		db.NewsEvent.find({
-			title: ev.title,
-			time: ev.time
-		},
-		function (err, doc) {
-			if (err) {
-				winston.error(err);
-				cb(err);
-			}
-			if (doc.length < 1) {
-				var news = new db.NewsEvent(ev);
-				news.save(function (err) {
-					if (err) {
-						winston.error(err);
-						cb(err);
-					}
-				});
-			}
-		});
-	});
-	cb(null);
+  events.forEach(function (ev) {
+    db.NewsEvent.find({
+      title: ev.title,
+      time: ev.time
+    },
+    function (err, doc) {
+      if (err) {
+        winston.error(err);
+        return cb(err);
+      }
+      if (doc.length < 1) {
+        var news = new db.NewsEvent(ev);
+        news.save(function (err) {
+          if (err) {
+            winston.error(err);
+            return cb(err);
+          }
+          cb(null);
+        });
+      }
+    });
+  });
 };
 
 module.exports = db;

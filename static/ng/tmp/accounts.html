@@ -1,8 +1,8 @@
 <div class="row">
-	<div class="col-md-6" ng-repeat="a in acctInfo">	
+	<div class="col-md-6" ng-repeat="a in acctInfo">
 		<div class="ibox">
 			<div class="ibox-title">
-				<h1>{{ a.accountName }} 
+				<h1>{{ a.accountName }}
 					<small>
 						{{ a.accountId }} : {{ a.accountCurrency }}
 					</small>
@@ -11,31 +11,19 @@
 					<ul class="list-group clear-list m-t">
 						<li class="list-group-item">
 							<h2>Balance
-								<span class="pull-right">{{ a.balance }}</span>
-							</h2>
-						</li>
-						<li class="list-group-item">
-							<h2>
-								Realized P/L
-								<span class="pull-right">{{ a.realizedPl }}</span>
-							</h2>
-						</li>
-						<li class="list-group-item">
-							<h2>
-								Unrealized P/L
-								<span class="pull-right">{{ a.unrealizedPl }}</span>
-							</h2>
-						</li>
-						<li class="list-group-item">
-							<h2>
-								Available Margin
-								<span class="pull-right">{{ a.marginAvail }}</span>
+								<span class="pull-right">{{ a.balance | currency : USD }}</span>
 							</h2>
 						</li>
 						<li class="list-group-item">
 							<h2>
 								Margin Used
-								<span class="pull-right">{{ a.marginUsed }}</span>
+								<span class="pull-right">{{ a.marginUsed | currency : USD }}</span>
+							</h2>
+						</li>
+						<li class="list-group-item">
+							<h2>
+								Available Margin
+								<span class="pull-right">{{ a.marginAvail | currency : USD }}</span>
 							</h2>
 						</li>
 					</ul>

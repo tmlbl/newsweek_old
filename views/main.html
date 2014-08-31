@@ -1,29 +1,32 @@
 <!DOCTYPE html>
 <html ng-app="newsweek">
 <head lang="en">
-	<meta charset="UTF-8">
-	<title>Newsweek</title>
+  <meta charset="UTF-8">
+  <title>Newsweek</title>
+
+  <link rel="stylesheet" href="static/inspinia/css/bootstrap.min.css">
+  <link rel="stylesheet" href="static/inspinia/css/style.css">
 </head>
 <body>
 
 <!-- Navbar -->
 <div class="container">
-	<div class="row  border-bottom white-bg dashboard-header">
-		<h2>Newsweek</h2>
-		<ol class="breadcrumb pull-right">
-			<li><a href="#/accounts">Accounts</a></li>
-  		<li><a href="#/events">Events</a></li>
-  		<li><a href="#/positions">Positions</a></li>
-  		<li class="active"><a href="/logout" target="_self">Logout</a></li>
-		</ol>
-	</div>
+  <div class="row  border-bottom white-bg dashboard-header">
+    <h2>Newsweek</h2>
+    <ol class="breadcrumb pull-right">
+      <li><a href="#/accounts">Accounts</a></li>
+      <li><a href="#/events">Events</a></li>
+      <li><a href="#/positions">Positions</a></li>
+      <li class="active"><a href="/logout" target="_self">Logout</a></li>
+    </ol>
+  </div>
 </div>
 
 <!-- View Body -->
 <div class="container">
-	<div class="wrapper wrapper-content">
-		<div ng-view></div>
-	</div>
+  <div class="wrapper wrapper-content">
+    <div ng-view></div>
+  </div>
 </div>
 
 <!-- Angular and Modules -->
@@ -37,6 +40,8 @@
 
 <!-- Inspinia Libraries -->
 <script src="static/inspinia/js/jquery-1.10.2.js"></script>
+<script src="static/inspinia/js/bootstrap.min.js"></script>
+<script src="static/inspinia/js/inspinia.js"></script>
 
 <!-- Angular App Init -->
 <script src="static/ng/app.js"></script>

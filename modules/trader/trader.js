@@ -1,43 +1,36 @@
+'use strict';
+
 var s = require('node-schedule'),
 		db = require('../../db/db'),
-		async = require('async');
+    OA = require('../oanda/client');
 
-var store = {};
+module.exports = Trader;
 
-// Creates a new tradegroup and the associated trades
-function newTrade(params, callback) {
-	store.params = params;
-	async.series([
-		createTradeGroup,
-		registerOrders
-	], callback);
-}
-module.exports.new = newTrade;
-
-// Creates a new trade group and schedules execution
-function createTradeGroup (next) {
-	logger.debug('In', createTradeGroup.name);
-	var tradeGroup = new db.TradeGroup(store.params);
-	tradeGroup.save(function (err) {
-		if (err) {
-			logger.error(err);
-		} 
-		logger.debug('Created trade group', tradeGroup.toObject());
-		store.tradeGroup = tradeGroup;
-		next();
-	});
+function Trader(options, trade) {
+  var self = this;
+  this.options = options;
+  this.client = new OA(options.token, options.account);
+  this.trade = trade;
+  this.model = new db.TradeGroup(this.trade);
+  this.model.save(function (err) {
+    if (err) {
+      logger.error(err);
+    }
+    logger.debug('Created trade group', self.model.toObject());
+    self.schedule();
+  });
 }
 
-// Schedules execution of a tradeGroup
-function registerOrders (next) {
-	logger.debug('In', registerOrders.name);
-	var t = store.tradeGroup.time;
-	console.log('Scheduling trade at', t);
-	s.scheduleJob(t, execute.bind(store.tradeGroup));
-	next();
-}
+Trader.prototype.schedule = function () {
+  var t = this.trade.time;
+  logger.debug('Scheduling trade at', t);
+  s.scheduleJob(t, this.execute.bind(null, this));
+};
 
-// Executes the trades in a tradeGroup
-function execute (tradeGroup) {
-	return tradeGroup;
-}
+Trader.prototype.execute = function (self) {
+  logger.debug('Executing the trade');
+  self.client.openTrade(self.trade, function (err, res) {
+    logger.debug('Opened', res);
+  });
+  self.completed = true;
+};

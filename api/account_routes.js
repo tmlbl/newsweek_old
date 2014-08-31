@@ -4,7 +4,6 @@ var db = require('../db/db'),
 
 module.exports = function (app) {
   app.get('/fx/accounts/:id/positions', function (req, res) {
-  	console.log('Request by user', req.session.user);
   	var oa = new OandaClient(req.session.user.token, req.params.id);
     oa.getPositions(function (err, positions) {
       logger.info(positions);
@@ -22,9 +21,9 @@ module.exports = function (app) {
 			logger.info(accounts);
 			if (err) {
 				logger.error(util.inspect(err));
-				return res.send(500);
+				return res.status(500).send();
 			}
-			return res.send(200, accounts);
+			return res.status(200).send(accounts);
 		});
   });
 
@@ -33,9 +32,9 @@ module.exports = function (app) {
   	oa.getAccountInfo(function (err, info) {
   		if (err) {
   			logger.error(util.inspect(err));
-				return res.send(500);
+				return res.status(500).send();
   		}
-  		return res.send(200, info);
+  		return res.status(200).send(info);
   	});
   });
 };
