@@ -40,7 +40,13 @@ function createTestUser(next) {
 		var testUser = new db.User({
 			username: 'tim',
 			password: 'root',
-			token: '7d5100fcb48f09bff2c85a92b5ef6639-744dfed42981e7020c732a34184da930'
+			token: '7d5100fcb48f09bff2c85a92b5ef6639-744dfed42981e7020c732a34184da930',
+      accounts: [
+        {
+          number: 8564825,
+          name: 'Primary'
+        }
+      ]
 		});
 		testUser.save(function (err, user) {
 			if (err) {

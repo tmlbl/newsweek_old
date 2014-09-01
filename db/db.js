@@ -13,11 +13,12 @@ mongoose.connect(dbUrl, function (err) {
   }
 });
 
-db.NewsEvent = require('./models/news');
+db.NewsEvent = require('./models/event');
 db.Order = require('./models/order');
-db.TradeGroup = require('./models/tradeGroup');
+db.TradeGroup = require('./models/trade');
 db.User = require('./models/user');
 db.Strategy = require('./models/strategy');
+db.Instrument = require('./models/instrument');
 
 // Synchronizes news events into the db
 db.syncEvents = function (events, cb) {
@@ -62,5 +63,8 @@ db.Strategy.find({ name: 'default' }, function (err, strategy) {
     });
   }
 });
+
+// Load the list of instruments from Oanda
+require('./load_instruments')(db);
 
 module.exports = db;

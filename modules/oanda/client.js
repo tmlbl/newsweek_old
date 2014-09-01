@@ -43,6 +43,11 @@ OandaClient.prototype._delete = function (url, cb) {
 	this._request(url, 'DELETE', {}, cb);
 };
 
+OandaClient.prototype.getInstruments = function (cb) {
+  this._get(this.endpoint + '/v1/instruments?accountId=' +
+      this.accountId, cb);
+};
+
 OandaClient.prototype.getPrices = function (params, cb) {
 	var uri = url.parse(this.endpoint);
 	uri.query = params;

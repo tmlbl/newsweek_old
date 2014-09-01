@@ -5,7 +5,7 @@ module.exports = load();
 
 /**
  * Loads incomplete trades whose times have not yet come
- * into memory as Trader objects to ensure their execution
+ * into memory at app startup
  */
 function load() {
   var query = {

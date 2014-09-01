@@ -114,4 +114,5 @@ describe('Oanda API Client', function () {
       });
     });
 	});
+
 });
