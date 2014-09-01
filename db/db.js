@@ -19,6 +19,7 @@ db.TradeGroup = require('./models/trade');
 db.User = require('./models/user');
 db.Strategy = require('./models/strategy');
 db.Instrument = require('./models/instrument');
+db.Account = require('./models/account');
 
 // Synchronizes news events into the db
 db.syncEvents = function (events, cb) {

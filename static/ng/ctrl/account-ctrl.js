@@ -3,7 +3,7 @@ newsweek.controller('accountCtrl', [
 
 function accountCtrl($scope, $http, $rootScope) {
   $scope.acctInfo = [];
-  $scope.loading = true;
+  $rootScope.loading = true;
 
   if ($rootScope.accounts) {
     getAccountDetails();
@@ -20,7 +20,7 @@ function accountCtrl($scope, $http, $rootScope) {
       $http.get('/fx/accounts/' + a.accountId)
           .success(function (data) {
             $scope.acctInfo.push(data);
-            $scope.loading = false;
+            $rootScope.loading = false;
           });
     });
   }

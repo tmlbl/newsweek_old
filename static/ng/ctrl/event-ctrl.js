@@ -1,11 +1,14 @@
 
-function eventCtrl ($scope, $http, $timeout, $modal, $log) {
+function eventCtrl ($scope, $http, $timeout, $modal, $log, $rootScope) {
+  $rootScope.loading = true;
+
 	// Gets the upcoming news
 	$http.get('/api/events/latest')
 		.success(function (data) {
 			data = color(data);
 			$scope.latestNews = data;
 			$scope.nextEvent = nextEvent(data);
+      $rootScope.loading = false;
 		});
 
 	// Gets the latest trades
@@ -14,6 +17,7 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
         .success(function (data) {
           $scope.trades = data;
           $scope.nextTrade = nextEvent(data);
+          $rootScope.loading = false;
         })
         .error(function (data) {
           $log.error(data);
@@ -94,4 +98,4 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
 }
 
 newsweek.controller('eventCtrl',
-	['$scope', '$http', '$timeout', '$modal', '$log', eventCtrl]);
+	['$scope', '$http', '$timeout', '$modal', '$log', '$rootScope', eventCtrl]);

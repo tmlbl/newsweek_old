@@ -6,13 +6,21 @@
 
   <link rel="stylesheet" href="static/inspinia/css/bootstrap.min.css">
   <link rel="stylesheet" href="static/inspinia/css/style.css">
+  <link rel="stylesheet" href="static/inspinia/font-awesome/css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="static/forex.css"/>
 </head>
 <body>
 
 <!-- Navbar -->
 <div class="container">
   <div class="row  border-bottom white-bg dashboard-header">
-    <h2>Newsweek</h2>
+    <h2>
+      Newsweek
+    </h2>
+    <!-- Loading indicator-->
+<span id="loading"
+      class="fa fa-5x fa-refresh fa-spin pull-right"
+      ng-if="loading"></span>
     <ol class="breadcrumb pull-right">
       <li><a href="#/accounts">Accounts</a></li>
       <li><a href="#/events">Events</a></li>

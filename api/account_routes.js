@@ -28,7 +28,7 @@ module.exports = function (app) {
   });
 
   app.get('/fx/accounts/:id', function (req, res) {
-  	var oa = new OandaClient(req.session.user.token, req.params.id)
+  	var oa = new OandaClient(req.session.user.token, req.params.id);
   	oa.getAccountInfo(function (err, info) {
   		if (err) {
   			logger.error(util.inspect(err));

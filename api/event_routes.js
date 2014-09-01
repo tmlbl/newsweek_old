@@ -32,10 +32,10 @@ module.exports = function (app) {
 			}
 		}, function (err, docs) {
 			if (err) {
-				res.send(500, err);
+				res.status(500).send(err);
 				return;
 			}
-			res.send(200, docs);
+			res.status(200).send(docs);
 		});
 	});
 

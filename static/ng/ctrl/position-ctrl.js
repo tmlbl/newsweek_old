@@ -4,7 +4,7 @@ newsweek.controller('positionCtrl', [
 function positionCtrl ($scope, $http, $log, $rootScope) {
 
 	$scope.positions = [];
-  $scope.loading = true;
+  $rootScope.loading = true;
 
   if ($rootScope.accounts) {
     getPositions();
@@ -21,11 +21,11 @@ function positionCtrl ($scope, $http, $log, $rootScope) {
       $http.get('/fx/accounts/' + acct.accountId + '/positions')
           .success(function (data) {
             $scope.positions = $scope.positions.concat(data.positions);
-            $scope.loading = false;
+            $rootScope.loading = false;
           })
           .error(function (err) {
             $log.error(err);
-            $scope.loading = false;
+            $rootScope.loading = false;
           });
     });
   }

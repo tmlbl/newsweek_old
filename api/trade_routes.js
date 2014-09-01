@@ -65,9 +65,9 @@ module.exports = function (app) {
     db.TradeGroup.update({ _id: req.params.id }, up)
       .exec(function (err, trade) {
         if (err) {
-          return res.status(500).send(err);
+          return res.status(500).end(err);
         }
-        return res.status(200).send(trade);
+        return res.status(200).end();
       });
   });
 
