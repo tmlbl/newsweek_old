@@ -73,6 +73,7 @@ describe('Oanda API Client', function () {
       } else {
         orderId = res.tradeOpened.id;
         trading = true;
+        console.log('Opened order ' + orderId);
       }
 			done();
 		});
@@ -93,18 +94,24 @@ describe('Oanda API Client', function () {
 		});
 	});
 
-	it('should delete that trade', function (done) {
+	it('should close all trades', function (done) {
     if (!trading) {
       return done();
     }
-		client.closeTrade(orderId, function (err, res) {
-			if (err) {
-				throw err;
-			}
-			if (res.code) {
-				throw new Error('Got error code ' + res.code);
-			}
-			done();
-		});
+    client.getTrades(function (err, res) {
+      var least;
+      res.trades.forEach(function (trade) {
+        if (!least || trade.time < least) {
+          least = trade;
+        }
+      });
+      client.closeTrade(least.id, function (err) {
+        if (err) {
+          throw err;
+        }
+        console.log('Closed order ' + least.id);
+        done();
+      });
+    });
 	});
 });
