@@ -2,51 +2,56 @@
 
 var s = require('node-schedule'),
 		db = require('../../db/db'),
-    OA = require('../oanda/client');
+    OA = require('../oanda/client'),
+    util = require('util'),
+    async = require('async');
 
 module.exports = Trader;
 
-function Trader(options, trade, cb) {
-  this.options = options;
-  this.client = new OA(options.token, options.account);
-  this.trade = trade;
-  this.schedule(cb);
+function Trader(tradeGroupModel, cb) {
+  this.trade = tradeGroupModel;
+  async.series([
+      this._createClient.bind(null, this),
+      this._schedule.bind(null, this)
+  ], cb);
 }
 
-Trader.prototype.schedule = function (cb) {
+Trader.prototype._createClient = function (self, next) {
   var query = {
-    _id: this.trade.event
-  },
-  self = this;
+    _id: self.trade.user
+  };
+  db.User.findOne(query, function (err, user) {
+    if (err) {
+      return next(err);
+    }
+    self.user = user;
+    self.client = new OA(user.token, self.trade.account);
+    return next();
+  });
+};
+
+Trader.prototype._schedule = function (self, next) {
+  var query = {
+    _id: self.trade.event
+  };
   db.NewsEvent.findOne(query, function (err, event) {
     if (err) {
-      cb(new Error('Error finding event in db'));
+      return next(err);
     }
-    if (!event) {
-      cb(new Error('Couldn\'t find event in db'));
-    }
-    self.event = event;
     self.trade.time = event.time - 120000;
-    self.model = new db.TradeGroup(self.trade);
-    self.model.save(function (err) {
+    self.trade.save(function (err) {
       if (err) {
-        cb(err);
+        return next(err);
       }
-      logger.debug('Scheduling trade', self.model.id, 'at', self.trade.time);
       s.scheduleJob(self.trade.time, self.execute.bind(null, self));
-      cb(null, self.model.id);
+      logger.debug('Scheduled trade', self.trade.id, 'at',
+          util.inspect(self.trade.time));
+      return next();
     });
   });
 };
 
 Trader.prototype.execute = function (self) {
-  logger.debug('Executing trade', self.model.id);
-  self.client.openTrade(self.trade, function (err, res) {
-    logger.debug('Opened', res);
-    self.completed = true;
-  });
-};
-
-Trader.prototype.tradeId = function () {
-  return this.model._id.toString()
+  logger.debug('Executing trade', self.trade.id);
+  self.completed = true;
 };

@@ -15,75 +15,81 @@ describe('Trader class', function () {
     _id: mongoose.Types.ObjectId()
   };
 
-  it('must create a test event', function (done) {
+  var testuser = {
+    username: 'tim',
+    password: 'root',
+    token: '7d5100fcb48f09bff2c85a92b5ef6639-744dfed42981e7020c732a34184da930',
+    _id: mongoose.Types.ObjectId()
+  };
+
+  var testtrade = {
+    event: testevent._id,
+    instrument: 'EUR_GBP',
+    units: 30,
+    account: 8564825,
+    user: testuser._id,
+    time: 'Mon Sep 01 2014 01:33:00 GMT+0000 (UTC)',
+    _id: mongoose.Types.ObjectId(),
+    orders: []
+  };
+
+  it('inserts the test models', function (done) {
     db.NewsEvent.create(testevent, function (err) {
       if (err) {
         throw err;
       }
-      done();
+      db.User.create(testuser, function (err) {
+        if (err) {
+          throw err;
+        }
+        db.TradeGroup.create(testtrade, function (err) {
+          if (err) {
+            throw err;
+          }
+          done();
+        })
+      });
     });
   });
 
   it('should initialize the class', function () {
-    trader = new Trader({
-      account: 	8564825,
-      token: '7d5100fcb48f09bff2c85a92b5ef6639-' +
-          '744dfed42981e7020c732a34184da930'
-    },
-    {
-      units: 2,
-      instrument: 'EUR_USD',
-      event: testevent._id
-    },
-    function (err) {
+    var query = {
+      _id: testtrade._id
+    };
+    db.TradeGroup.findOne(query, function (err, trade) {
       if (err) {
         throw err;
       }
+      trader = new Trader(trade, function (err) {
+        if (err) {
+          throw err;
+        }
+      });
+      if (!trader.execute) {
+        throw new Error('Didn\'t find the class object');
+      }
+      if (trader.completed) {
+        throw new Error('Trade was initialized as already completed');
+      }
     });
-    if (!trader.execute) {
-      throw new Error('Didn\'t find the class object');
-    }
-    if (trader.completed) {
-      throw new Error('Trade was initialized as already completed');
-    }
   });
 
-  it('should be marked as completed', function (next) {
+  it('should be marked as completed', function (done) {
     setTimeout(function () {
       if (!trader.completed) {
         throw new Error('The trade was not marked as completed');
       }
     }, 900);
-    setTimeout(next, 1000);
+    setTimeout(done, 1000);
   });
 
   it('should retain the trade information', function () {
-    if (trader.trade.units !== 2) {
+    if (trader.trade.units !== testtrade.units) {
       throw new Error('Expected 2, got ' + trader.trade.units);
     }
   });
 
-  it('should persist the trade in the database', function (done) {
-    var id = trader.tradeId();
-    if (!id) {
-      throw new Error('Trader didn\'t return a trade ID');
-    }
-    db.TradeGroup.findOne({ _id: id }, function (err, tradeGroup) {
-      if (err) {
-        throw err;
-      }
-      if (!tradeGroup) {
-        throw new Error('The tradegroup is not in the database');
-      }
-      done();
-    });
-  });
-
   it('should set a trade time based on the event', function () {
-    if (typeof trader.trade.time !== 'number') {
-      throw new Error('Expected trade time to be a number but got ' +
-        typeof trader.trade.time);
-    }
     try {
       Date.parse(trader.trade.time);
     } catch (err) {

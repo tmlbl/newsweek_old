@@ -7,6 +7,7 @@ var express = require('express'),
 require('./common/logger');
 
 require('./db/dev_test_data')();
+require('./modules/trader/load');
 
 app.use('/static', express.static(__dirname + '/static'));
 app.use(function (req, res, next) {
