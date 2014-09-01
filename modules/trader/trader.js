@@ -68,5 +68,57 @@ Trader.prototype._schedule = function (self, next) {
 
 Trader.prototype.execute = function (self) {
   logger.debug('Executing trade', self.trade.id);
+  // Get the current instrument price
+  var params = {
+    instruments: [self.trade.instrument]
+  };
+  self.client.getPrices(params, function (err, res) {
+    self.ask = res.prices[0].ask;
+
+    logger.debug('Current ask price of', self.trade.instrument, 'is', self.ask);
+    logger.debug('Top order will be placed at', self.topOrder().price);
+    self.client.openTrade(self.topOrder(), function (err, data) {
+      logger.debug('Opened top order', data, err);
+    });
+    logger.debug('Bottom order will be placed at', self.bottomOrder().price);
+    self.client.openTrade(self.bottomOrder(), function (err, data) {
+      logger.debug('Opened bottom order', data, err);
+    });
+  });
   self.completed = true;
+};
+
+Trader.prototype.topOrder = function () {
+  var straddle = this.strategy.straddle / 10000,
+      stopLoss = this.strategy.stopLoss / 10000,
+      takeProfit = this.strategy.takeProfit / 10000;
+  return {
+    price: this.ask + straddle,
+    instrument: this.trade.instrument,
+    side: 'buy',
+    type: 'limit',
+    stopLoss: this.ask + straddle - stopLoss,
+    takeProfit: this.ask + straddle + takeProfit,
+    trailingStop: this.ask + straddle - trailingStop,
+    expiry: Date.now() + 1000 * 60 * 60 / 1000,
+    units: this.trade.units
+  };
+};
+
+Trader.prototype.bottomOrder = function () {
+  var straddle = this.strategy.straddle / 10000,
+      stopLoss = this.strategy.stopLoss / 10000,
+      takeProfit = this.strategy.takeProfit / 10000,
+      trailingStop = this.strategy.trailingStop / 10000;
+  return {
+    price: this.ask - straddle,
+    instrument: this.trade.instrument,
+    side: 'sell',
+    type: 'limit',
+    stopLoss: this.ask - straddle + stopLoss,
+    takeProfit: this.ask - straddle - takeProfit,
+    trailingStop: this.ask - straddle + trailingStop,
+    expiry: Date.now() + 1000 * 60 * 60 / 1000,
+    units: this.trade.units
+  };
 };

@@ -14,7 +14,6 @@ function newTradeCtrl ($scope, $modalInstance, event, trades,
 				$scope.trade.event = {
 					title: event.title
 				};
-				trades.push($scope.trade);
 				$modalInstance.close();
 			})
 			.error(function (err) {

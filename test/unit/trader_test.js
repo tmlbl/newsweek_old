@@ -80,7 +80,7 @@ describe('Trader class', function () {
         throw new Error('The trade was not marked as completed');
       }
     }, 900);
-    setTimeout(done, 1000);
+    setTimeout(done, 1900);
   });
 
   it('should retain the trade information', function () {
@@ -95,6 +95,28 @@ describe('Trader class', function () {
       Date.parse(trader.trade.time);
     } catch (err) {
       throw err;
+    }
+  });
+
+  it('should create a top order object', function () {
+    var topOrder = trader.topOrder();
+    if (typeof topOrder !== 'object') {
+      throw new Error('Expected order to be an object but it\'s',
+          typeof topOrder);
+    }
+    if (isNaN(topOrder.price)) {
+      throw new Error('topOrder price should be a number');
+    }
+  });
+
+  it('should create a bottom order object', function () {
+    var bottomOrder = trader.bottomOrder();
+    if (typeof bottomOrder !== 'object') {
+      throw new Error('Expected order to be an object but it\'s',
+          typeof bottomOrder);
+    }
+    if (isNaN(bottomOrder.price)) {
+      throw new Error('bottomOrder price should be a number');
     }
   });
 

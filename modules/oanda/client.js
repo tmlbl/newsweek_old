@@ -17,7 +17,8 @@ OandaClient.prototype._request = function (url, method, body, cb) {
 		form: body,
 		headers: {
 			'Authorization': 'Bearer ' + this.apiToken,
-			'Content-Type': 'application/x-www-form-urlencoded'
+			'Content-Type': 'application/x-www-form-urlencoded',
+      'X-Accept-Datetime-Format': 'UNIX'
 		}
 	};
 	request(options, function (err, res) {

@@ -4,7 +4,7 @@ var mongoose = require('mongoose'),
 var OrderSchema = new mongoose.Schema({
 	'user'         : { type: ObjectId, ref: 'User' },
 	'tradeGroup'   : { type: ObjectId, ref: 'TradeGroup' },
-	'time'         : { type: Date, required: true, index: true },
+	'time'         : { type: Date, index: true },
 	'instrument'   : { type: String, required: true },
 	'units'        : { type: Number, required: true },
 	'side'         : { type: String, required: true },
