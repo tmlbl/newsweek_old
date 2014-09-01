@@ -74,17 +74,17 @@ OandaClient.prototype.getTrades = function (cb) {
       '/trades', cb);
 };
 
-OandaClient.prototype.openTrade = function(order, cb) {
+OandaClient.prototype.openTrade = function (order, cb) {
 	this._post(this.endpoint + '/v1/accounts/' + this.accountId +
 		  '/orders', order, cb);
 };
 
-OandaClient.prototype.getTradeInfo = function(orderId, cb) {
+OandaClient.prototype.getTradeInfo = function (orderId, cb) {
 	this._get(this.endpoint + '/v1/accounts/' + this.accountId +
 		  '/trades/' + orderId, cb);
 };
 
-OandaClient.prototype.closeTrade = function(orderId, cb) {
+OandaClient.prototype.closeTrade = function (orderId, cb) {
 	this._delete(this.endpoint + '/v1/accounts/' + this.accountId +
 		  '/trades/' + orderId, cb);
 };
