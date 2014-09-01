@@ -1,6 +1,7 @@
 var Trader = require('../../modules/trader/trader'),
     mongoose = require('mongoose'),
-    db = require('../../db/db');
+    db = require('../../db/db'),
+    util = require('util');
 
 require('../../common/logger');
 
@@ -24,7 +25,7 @@ describe('Trader class', function () {
 
   var testTrade = {
     event: testEvent._id,
-    instrument: 'EUR_GBP',
+    instrument: 'EUR_USD',
     units: 30,
     account: 8564825,
     user: testUser._id,
@@ -80,7 +81,7 @@ describe('Trader class', function () {
         throw new Error('The trade was not marked as completed');
       }
     }, 900);
-    setTimeout(done, 1900);
+    setTimeout(done, 3000);
   });
 
   it('should retain the trade information', function () {
@@ -107,6 +108,11 @@ describe('Trader class', function () {
     if (isNaN(topOrder.price)) {
       throw new Error('topOrder price should be a number');
     }
+    if (typeof topOrder.price !== 'number') {
+      throw new Error('Price should be a number but it\'s a ',
+          util.inspect(typeof topOrder.price));
+    }
+    logger.info(util.inspect(topOrder));
   });
 
   it('should create a bottom order object', function () {
@@ -118,6 +124,7 @@ describe('Trader class', function () {
     if (isNaN(bottomOrder.price)) {
       throw new Error('bottomOrder price should be a number');
     }
+    logger.info(util.inspect(bottomOrder));
   });
 
 });

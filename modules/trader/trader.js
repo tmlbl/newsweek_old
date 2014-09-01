@@ -4,7 +4,8 @@ var s = require('node-schedule'),
 		db = require('../../db/db'),
     OA = require('../oanda/client'),
     util = require('util'),
-    async = require('async');
+    async = require('async'),
+    precision = 5;
 
 module.exports = Trader;
 
@@ -78,11 +79,19 @@ Trader.prototype.execute = function (self) {
     logger.debug('Current ask price of', self.trade.instrument, 'is', self.ask);
     logger.debug('Top order will be placed at', self.topOrder().price);
     self.client.openTrade(self.topOrder(), function (err, data) {
-      logger.debug('Opened top order', data, err);
+      if (err) {
+        logger.error('Error opening top order', err);
+      } else {
+        logger.debug('Opened top order', data);
+      }
     });
     logger.debug('Bottom order will be placed at', self.bottomOrder().price);
     self.client.openTrade(self.bottomOrder(), function (err, data) {
-      logger.debug('Opened bottom order', data, err);
+      if (err) {
+        logger.error('Error opening bottom order', err);
+      } else {
+        logger.debug('Opened bottom order', data);
+      }
     });
   });
   self.completed = true;
@@ -93,14 +102,14 @@ Trader.prototype.topOrder = function () {
       stopLoss = this.strategy.stopLoss / 10000,
       takeProfit = this.strategy.takeProfit / 10000;
   return {
-    price: this.ask + straddle,
+    price: parseFloat((this.ask + straddle).toFixed(precision)),
     instrument: this.trade.instrument,
     side: 'buy',
     type: 'limit',
-    stopLoss: this.ask + straddle - stopLoss,
-    takeProfit: this.ask + straddle + takeProfit,
-    trailingStop: this.ask + straddle - trailingStop,
-    expiry: Date.now() + 1000 * 60 * 60 / 1000,
+    stopLoss: parseFloat((this.ask + straddle - stopLoss).toFixed(precision)),
+    takeProfit: parseFloat((this.ask + straddle + takeProfit).toFixed(precision)),
+    trailingStop: this.strategy.trailingStop,
+    expiry: parseInt(((new Date().getTime() + 1000) / 1000).toFixed()),
     units: this.trade.units
   };
 };
@@ -108,17 +117,16 @@ Trader.prototype.topOrder = function () {
 Trader.prototype.bottomOrder = function () {
   var straddle = this.strategy.straddle / 10000,
       stopLoss = this.strategy.stopLoss / 10000,
-      takeProfit = this.strategy.takeProfit / 10000,
-      trailingStop = this.strategy.trailingStop / 10000;
+      takeProfit = this.strategy.takeProfit / 10000;
   return {
-    price: this.ask - straddle,
+    price: parseFloat((this.ask - straddle).toFixed(precision)),
     instrument: this.trade.instrument,
     side: 'sell',
     type: 'limit',
-    stopLoss: this.ask - straddle + stopLoss,
-    takeProfit: this.ask - straddle - takeProfit,
-    trailingStop: this.ask - straddle + trailingStop,
-    expiry: Date.now() + 1000 * 60 * 60 / 1000,
+    stopLoss: parseFloat((this.ask - straddle + stopLoss).toFixed(precision)),
+    takeProfit: parseFloat((this.ask - straddle - takeProfit).toFixed(precision)),
+    trailingStop: this.strategy.trailingStop,
+    expiry: parseInt(((new Date().getTime() + 1000) / 1000).toFixed()),
     units: this.trade.units
   };
 };
