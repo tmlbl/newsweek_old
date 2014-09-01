@@ -12,6 +12,7 @@ function Trader(tradeGroupModel, cb) {
   this.trade = tradeGroupModel;
   async.series([
       this._createClient.bind(null, this),
+      this._loadStrategy.bind(null, this),
       this._schedule.bind(null, this)
   ], cb);
 }
@@ -30,6 +31,20 @@ Trader.prototype._createClient = function (self, next) {
   });
 };
 
+Trader.prototype._loadStrategy = function (self, next) {
+  // For now, load the default strategy
+  var query = {
+    name: 'default'
+  };
+  db.Strategy.findOne(query, function (err, strategy) {
+    if (err) {
+      return next(err);
+    }
+    self.strategy = strategy;
+    return next();
+  });
+};
+
 Trader.prototype._schedule = function (self, next) {
   var query = {
     _id: self.trade.event
@@ -38,7 +53,7 @@ Trader.prototype._schedule = function (self, next) {
     if (err) {
       return next(err);
     }
-    self.trade.time = event.time - 120000;
+    self.trade.time = event.time - self.strategy.timeBefore;
     self.trade.save(function (err) {
       if (err) {
         return next(err);

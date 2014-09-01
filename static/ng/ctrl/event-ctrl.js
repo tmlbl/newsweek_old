@@ -9,14 +9,17 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
 		});
 
 	// Gets the latest trades
-	$http.get('/api/trades/latest')
-		.success(function (data) {
-			$scope.trades = data;
-			$scope.nextTrade = nextEvent(data);
-		})
-		.error(function (data) {
-			$log.error(data);
-		});
+  function getTrades() {
+    $http.get('/api/trades/latest')
+        .success(function (data) {
+          $scope.trades = data;
+          $scope.nextTrade = nextEvent(data);
+        })
+        .error(function (data) {
+          $log.error(data);
+        });
+  }
+  getTrades();
 
 	// Creates a live time value
 	function curTime () {
@@ -27,7 +30,7 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
 
 	// Opens the new trade modal
 	$scope.newTrade = function (ev) {
-		$modal.open({
+		var instance = $modal.open({
 			templateUrl: 'static/ng/tmp/newTradeModal.html',
 			controller: 'newTradeCtrl',
 			resolve: {
@@ -39,6 +42,9 @@ function eventCtrl ($scope, $http, $timeout, $modal, $log) {
 				}
 			}
 		});
+    instance.result.then(function () {
+      getTrades();
+    });
 	};
 
 	// Opens the edit trade modal
