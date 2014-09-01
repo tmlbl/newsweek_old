@@ -68,36 +68,58 @@ Trader.prototype._schedule = function (self, next) {
 };
 
 Trader.prototype.execute = function (self) {
-  logger.debug('Executing trade', self.trade.id);
-  // Get the current instrument price
-  var params = {
-    instruments: [self.trade.instrument]
-  };
-  self.client.getPrices(params, function (err, res) {
-    self.ask = res.prices[0].ask;
 
-    logger.debug('Current ask price of', self.trade.instrument, 'is', self.ask);
-    logger.debug('Top order will be placed at', self.topOrder().price);
-    self.client.openTrade(self.topOrder(), function (err, data) {
-      if (err) {
-        logger.error('Error opening top order', err);
-      } else {
-        logger.debug('Opened top order', data);
-      }
+  async.series([
+      _getPrices,
+      _placeTopOrder,
+      _placeBottomOrder
+  ], function (err) {
+    logger.debug('Finished executing trade', self.trade.id);
+    if (err) {
+      logger.error(util.inspect(err));
+    }
+    self.completed = true;
+  });
+
+  function _getPrices(next) {
+    // Get the current instrument price
+    var params = {
+      instruments: [self.trade.instrument]
+    };
+    self.client.getPrices(params, function (err, res) {
+      self.ask = res.prices[0].ask;
+      logger.debug('Current ask price of', self.trade.instrument, 'is', self.ask);
+      next();
     });
-    logger.debug('Bottom order will be placed at', self.bottomOrder().price);
-    self.client.openTrade(self.bottomOrder(), function (err, data) {
+  }
+
+  function _placeBottomOrder(next) {
+    logger.debug('Bottom order will be placed at', self._bottomOrder().price);
+    self.client.openTrade(self._bottomOrder(), function (err, data) {
       if (err) {
-        logger.error('Error opening bottom order', err);
+        return next(new Error('Error opening top order:' + err));
       } else {
         logger.debug('Opened bottom order', data);
+        return next();
       }
     });
-  });
-  self.completed = true;
+  }
+
+  function _placeTopOrder(next) {
+    logger.debug('Top order will be placed at', self._topOrder().price);
+    self.client.openTrade(self._topOrder(), function (err, data) {
+      if (err) {
+        return next(new Error('Error opening top order:' + err));
+      } else {
+        logger.debug('Opened top order', data);
+        return next();
+      }
+    });
+  }
+
 };
 
-Trader.prototype.topOrder = function () {
+Trader.prototype._topOrder = function () {
   var straddle = this.strategy.straddle / 10000,
       stopLoss = this.strategy.stopLoss / 10000,
       takeProfit = this.strategy.takeProfit / 10000;
@@ -114,7 +136,7 @@ Trader.prototype.topOrder = function () {
   };
 };
 
-Trader.prototype.bottomOrder = function () {
+Trader.prototype._bottomOrder = function () {
   var straddle = this.strategy.straddle / 10000,
       stopLoss = this.strategy.stopLoss / 10000,
       takeProfit = this.strategy.takeProfit / 10000;

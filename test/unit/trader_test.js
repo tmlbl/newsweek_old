@@ -80,8 +80,8 @@ describe('Trader class', function () {
       if (!trader.completed) {
         throw new Error('The trade was not marked as completed');
       }
-    }, 900);
-    setTimeout(done, 3000);
+    }, 4000);
+    setTimeout(done, 4100);
   });
 
   it('should retain the trade information', function () {
@@ -100,7 +100,7 @@ describe('Trader class', function () {
   });
 
   it('should create a top order object', function () {
-    var topOrder = trader.topOrder();
+    var topOrder = trader._topOrder();
     if (typeof topOrder !== 'object') {
       throw new Error('Expected order to be an object but it\'s',
           typeof topOrder);
@@ -116,7 +116,7 @@ describe('Trader class', function () {
   });
 
   it('should create a bottom order object', function () {
-    var bottomOrder = trader.bottomOrder();
+    var bottomOrder = trader._bottomOrder();
     if (typeof bottomOrder !== 'object') {
       throw new Error('Expected order to be an object but it\'s',
           typeof bottomOrder);
