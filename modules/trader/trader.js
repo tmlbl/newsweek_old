@@ -109,7 +109,7 @@ Trader.prototype.topOrder = function () {
     stopLoss: parseFloat((this.ask + straddle - stopLoss).toFixed(precision)),
     takeProfit: parseFloat((this.ask + straddle + takeProfit).toFixed(precision)),
     trailingStop: this.strategy.trailingStop,
-    expiry: parseInt(((new Date().getTime() + 1000) / 1000).toFixed()),
+    expiry: parseInt(((new Date().getTime() + 60 * 60) / 1000).toFixed()),
     units: this.trade.units
   };
 };
@@ -126,7 +126,7 @@ Trader.prototype.bottomOrder = function () {
     stopLoss: parseFloat((this.ask - straddle + stopLoss).toFixed(precision)),
     takeProfit: parseFloat((this.ask - straddle - takeProfit).toFixed(precision)),
     trailingStop: this.strategy.trailingStop,
-    expiry: parseInt(((new Date().getTime() + 1000) / 1000).toFixed()),
+    expiry: parseInt(((new Date().getTime() + 60 * 60) / 1000).toFixed()),
     units: this.trade.units
   };
 };
