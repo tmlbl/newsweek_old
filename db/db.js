@@ -17,6 +17,7 @@ db.NewsEvent = require('./models/news');
 db.Order = require('./models/order');
 db.TradeGroup = require('./models/tradeGroup');
 db.User = require('./models/user');
+db.Strategy = require('./models/strategy');
 
 // Synchronizes news events into the db
 db.syncEvents = function (events, cb) {
@@ -43,5 +44,23 @@ db.syncEvents = function (events, cb) {
     });
   });
 };
+
+// Insert the default strategy
+db.Strategy.find({ name: 'default' }, function (err, strategy) {
+  if (err) {
+    logger.error('Error upserting default strategy', err);
+  }
+  if (!strategy.name) {
+    logger.debug('Creating the default strategy...');
+    db.Strategy.create({
+      'name'         : 'default',
+      'straddle'     : 10, // pips
+      'timeBefore'   : 120000, // 2 minutes
+      'stopLoss'     : 20, // pips
+      'takeProfit'   : 30, // pips
+      'trailingStop' : 10 // pips
+    });
+  }
+});
 
 module.exports = db;

@@ -7,7 +7,7 @@ require('../../common/logger');
 describe('Trader class', function () {
   var trader;
 
-  var testevent = {
+  var testEvent = {
     title: 'MPC Member Broadbent Speaks',
     country: 'GBP',
     time: Date.now() + 120000,
@@ -15,34 +15,34 @@ describe('Trader class', function () {
     _id: mongoose.Types.ObjectId()
   };
 
-  var testuser = {
+  var testUser = {
     username: 'tim',
     password: 'root',
     token: '7d5100fcb48f09bff2c85a92b5ef6639-744dfed42981e7020c732a34184da930',
     _id: mongoose.Types.ObjectId()
   };
 
-  var testtrade = {
-    event: testevent._id,
+  var testTrade = {
+    event: testEvent._id,
     instrument: 'EUR_GBP',
     units: 30,
     account: 8564825,
-    user: testuser._id,
+    user: testUser._id,
     time: 'Mon Sep 01 2014 01:33:00 GMT+0000 (UTC)',
     _id: mongoose.Types.ObjectId(),
     orders: []
   };
 
   it('inserts the test models', function (done) {
-    db.NewsEvent.create(testevent, function (err) {
+    db.NewsEvent.create(testEvent, function (err) {
       if (err) {
         throw err;
       }
-      db.User.create(testuser, function (err) {
+      db.User.create(testUser, function (err) {
         if (err) {
           throw err;
         }
-        db.TradeGroup.create(testtrade, function (err) {
+        db.TradeGroup.create(testTrade, function (err) {
           if (err) {
             throw err;
           }
@@ -54,7 +54,7 @@ describe('Trader class', function () {
 
   it('should initialize the class', function () {
     var query = {
-      _id: testtrade._id
+      _id: testTrade._id
     };
     db.TradeGroup.findOne(query, function (err, trade) {
       if (err) {
@@ -84,8 +84,9 @@ describe('Trader class', function () {
   });
 
   it('should retain the trade information', function () {
-    if (trader.trade.units !== testtrade.units) {
-      throw new Error('Expected 2, got ' + trader.trade.units);
+    if (trader.trade.units !== testTrade.units) {
+      throw new Error('Expected ' + testTrade.units +
+          ', got ' + trader.trade.units);
     }
   });
 

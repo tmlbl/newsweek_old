@@ -57,7 +57,7 @@ module.exports = function (app) {
 				return res.send(500, 
 						'There was an error creating your account');
 			}
-			console.log('Saved user', user)
+			console.log('Saved user', user);
 			req.session.user = user;
 			return res.redirect('/');
 		});
