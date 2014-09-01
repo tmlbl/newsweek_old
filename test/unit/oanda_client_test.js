@@ -94,7 +94,7 @@ describe('Oanda API Client', function () {
 		});
 	});
 
-	it('should close all trades', function (done) {
+	it('should close a trade', function (done) {
     if (!trading) {
       return done();
     }
