@@ -124,6 +124,10 @@ describe('Trader class', function () {
     if (isNaN(bottomOrder.price)) {
       throw new Error('bottomOrder price should be a number');
     }
+    if (typeof bottomOrder.price !== 'number') {
+      throw new Error('Price should be a number but it\'s a ',
+          util.inspect(typeof bottomOrder.price));
+    }
     logger.info(util.inspect(bottomOrder));
   });
 
